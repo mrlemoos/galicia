@@ -8,7 +8,7 @@ try {
   const { values } = parseArgs({ options: {
     repo: { type: 'string' }, ref: { type: 'string' }, project: { type: 'string' }, help: { type: 'boolean' },
   } });
-  if (values.help) console.log('node scripts/download.ts --repo OWNER/REPO --ref FULL_40_CHARACTER_COMMIT --project PATH\nRequires Git + Node >=22.18. Downloads pinned GitHub commit, runs reviewed source installer interactively, then removes temporary download. No global installation. Repository/commit must be trusted; downloaded TypeScript executes locally. No release is published by this repository.');
+  if (values.help) console.log('node scripts/download.ts --repo OWNER/REPO --ref FULL_40_CHARACTER_COMMIT --project PATH\nRequires Git + Node >=22.18. Downloads pinned GitHub commit, runs reviewed source installer interactively, then removes temporary download. No global installation. Repository/commit must be trusted; downloaded TypeScript executes locally. Public source: https://github.com/mrlemoos/galicia.');
   else {
     if (!values.repo || !/^[A-Za-z0-9][A-Za-z0-9_.-]*\/[A-Za-z0-9][A-Za-z0-9_.-]*$/.test(values.repo)) throw new Error('Use GitHub OWNER/REPO.');
     if (!values.ref || !/^[a-f0-9]{40}$/i.test(values.ref)) throw new Error('Pin full 40-character commit SHA; branches/tags rejected.');

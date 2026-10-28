@@ -5,7 +5,7 @@ Resource-conscious engineering tools. Five concise instruction skills, local Mar
 | Scope | Context |
 |---|---|
 | Skill workflows | Root `<skill>/SKILL.md`, [behaviour scenarios](eval/README.md) |
-| Installation | `src/cli.ts`, `src/install.ts`, `src/terminal.ts`, `scripts/download.ts` |
+| Installation | `src/cli.ts`, `src/install.ts`, `src/terminal.ts`, `scripts/download.ts`, `scripts/setup.ts` |
 | Spec review | `src/check-specs.ts`, `src/startup.ts` |
 | Context ownership | [Layout](docs/context-layout.md), [domain language](docs/Language.md) |
 | Resource policy | [Philosophy](docs/philosophy.md), [research](docs/research.md), [measurements](docs/measurements.md) |

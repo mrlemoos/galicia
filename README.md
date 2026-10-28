@@ -12,13 +12,17 @@ Skills use caveman prose. No emojis, filler or repeated instructions. Exact cont
 | `breakdown` | Produce approved vertical tickets with explicit blockers. |
 | `find-rc` | Reproduce symptom, minimise, test hypotheses, fix root cause, verify regression. |
 
-## Try it locally
+## Install
 
-Requires **Node 22.18+**. No runtime dependencies or build step. Git required for downloading pinned source and the Codex startup hook. These are source commands, not a published npm package.
+Run from your project's root in a macOS or Linux terminal. Requires **Node 22.18+**, curl and tar.
 
 ```sh
-node src/cli.ts init --project /absolute/path/to/project
+curl -fsSL https://raw.githubusercontent.com/mrlemoos/galicia/main/scripts/setup.ts | node --input-type=module
 ```
+
+Setup downloads pinned source, opens interactive choices, previews project changes, then removes temporary files. No clone, npm install or global installation. Command executes remote code. Bootstrap follows `main`; downloaded installer pins commit `050d4835a5e0032230f6a358567771ea3ec4e73d`.
+
+From an existing checkout, use `node src/cli.ts init --project /absolute/path/to/project`. Runtime has no dependencies or build step. Git required only for Codex startup hooks and the optional Git downloader.
 
 Arrow keys move, space selects, enter continues. Setup chooses agents, skills, grilling cadence and optional hooks, then previews files. `NO_COLOR=1` uses plain numbered prompts. Existing context stays authoritative. Edited generated files cause a conflict; installer writes nothing until conflicts resolved. Repeat identical setup makes no changes.
 
@@ -29,24 +33,17 @@ node src/cli.ts init --project /absolute/path/to/project --agents codex --cadenc
 
 `--dry-run` shows before/after contents. `--yes` accepts the displayed plan. Hooks are opt-in. All installs project-local, never home/global. No telemetry or model calls. Different target selections add/update selected files; they do not delete previously installed skills or hooks. Review removal manually.
 
-## Download and initialise
+## Choose an exact revision
 
-From a reviewed Galicia checkout:
+For a reviewed bootstrap, replace `main` in the install URL with its full commit SHA. Bootstrap still downloads its embedded installer revision.
 
-```sh
-node scripts/download.ts --repo OWNER/REPO --ref FULL_40_CHARACTER_COMMIT --project /absolute/path/to/project
-```
-
-Replace placeholders with the published source and trusted full commit SHA. No release or remote repository has been published by this workspace. Script fetches that exact GitHub commit into a temporary directory, verifies SHA, runs its interactive installer, then removes download. Requires Git/network. Downloaded TypeScript executes locally; review source first. Branches and tags rejected.
-
-To acquire the initial checkout without an existing copy:
+Existing checkouts also support the Git downloader:
 
 ```sh
-git clone https://github.com/OWNER/REPO.git galicia
-cd galicia
-git checkout --detach FULL_40_CHARACTER_COMMIT
-node src/cli.ts init --project /absolute/path/to/project
+node scripts/download.ts --repo mrlemoos/galicia --ref 050d4835a5e0032230f6a358567771ea3ec4e73d --project /absolute/path/to/project
 ```
+
+Requires Git/network. Fetches exact commit into temporary directory, verifies SHA, runs interactive setup, removes download. Branches and tags rejected.
 
 ## Context that scales
 
