@@ -9,7 +9,8 @@
   "scripts": {
     "check": "tsc --noEmit",
     "test": "node --test tests/*.test.ts",
-    "init": "node src/cli.ts init"
+    "init": "node src/cli.ts init",
+    "download": "node scripts/download.ts"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

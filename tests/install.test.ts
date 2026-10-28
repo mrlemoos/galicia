@@ -112,3 +112,11 @@ test('CLI dry-run creates nothing, rejects unknown agents and flags', async () =
     assert.equal(bad.status, 1);
   }
 }));
+
+test('download script rejects mutable refs and unsafe repository strings before fetching', () => {
+  for (const args of [['--repo', 'owner/repo', '--ref', 'main'], ['--repo', '../oops', '--ref', 'a'.repeat(40)]]) {
+    const run = spawnSync(process.execPath, [join(sourceRoot, 'scripts/download.ts'), ...args], { encoding: 'utf8' });
+    assert.equal(run.status, 1);
+    assert.doesNotMatch(run.stdout, /downloading/);
+  }
+});
