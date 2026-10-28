@@ -1,5 +1,5 @@
 {
-  "checkedSource": "1dd4bb4ed74ca824626ec0e10c6022ecd67620d7",
+  "checkedSource": "99d7eb651a5d90e200d52577ab1c69fe5380fef4",
   "platform": "Darwin arm64",
   "nodeVersion": "25.9.0",
   "reports": [
@@ -9,176 +9,18 @@
       "compilerVersion": "0.4.5",
       "command": "coverage",
       "entry": "src/cli.ts",
-      "success": false,
-      "phase": "compile",
+      "success": true,
+      "phase": "complete",
       "stats": {
-        "statementsTotal": 246,
-        "statementsStatic": 241,
-        "statementsDynamic": 17,
-        "statementsFailed": 5,
+        "statementsTotal": 315,
+        "statementsStatic": 315,
+        "statementsDynamic": 27,
+        "statementsFailed": 0,
         "functionsSkipped": 0,
-        "percentStatic": 97
+        "percentStatic": 100
       },
-      "groups": [
-        {
-          "id": "SC1090-9e7c6f3d",
-          "code": "SC1090",
-          "category": "unsupported",
-          "severity": "error",
-          "scope": "reached",
-          "message": "functions with optional or defaulted parameters as values, except where the target type spells the completed signature with required parameters (a '(x?: T) => R' function flows into a '(x: T | undefined) => R' slot, and a package/'any' slot takes any natively representable signature; otherwise call the function directly)",
-          "hint": "this form is valid TypeScript but does not compile yet \u2014 rewrite it with a supported equivalent of the construct the message names (https://scriptc.dev/limitations lists the boundary)",
-          "count": 3,
-          "primary": {
-            "file": "src/check-specs.ts",
-            "line": 17,
-            "column": 3
-          },
-          "sites": [
-            {
-              "file": "src/check-specs.ts",
-              "line": 17,
-              "column": 3
-            },
-            {
-              "file": "src/install.ts",
-              "line": 82,
-              "column": 3
-            },
-            {
-              "file": "src/terminal.ts",
-              "line": 42,
-              "column": 5
-            }
-          ]
-        },
-        {
-          "id": "SC2020-7de1846b",
-          "code": "SC2020",
-          "category": "unsupported",
-          "severity": "error",
-          "scope": "reached",
-          "message": "'a 'keypress' listener whose first parameter is 'string'' is part of the standard library types but has no scriptc lowering yet",
-          "hint": "the first argument is undefined for escape sequences \u2014 declare it as string | undefined",
-          "count": 1,
-          "primary": {
-            "file": "src/terminal.ts",
-            "line": 67,
-            "column": 34
-          },
-          "sites": [
-            {
-              "file": "src/terminal.ts",
-              "line": 67,
-              "column": 34
-            }
-          ]
-        },
-        {
-          "id": "SC2020-df5e5afc",
-          "code": "SC2020",
-          "category": "unsupported",
-          "severity": "error",
-          "scope": "reached",
-          "message": "'fs.promises.writeFile with the flag option' is part of the standard library types but has no scriptc lowering yet",
-          "hint": "the write truncates-or-creates (Node's default 'w'); other flags have no lowering",
-          "count": 1,
-          "primary": {
-            "file": "src/install.ts",
-            "line": 147,
-            "column": 47
-          },
-          "sites": [
-            {
-              "file": "src/install.ts",
-              "line": 147,
-              "column": 47
-            }
-          ]
-        }
-      ],
-      "diagnostics": [
-        {
-          "code": "SC1090",
-          "category": "unsupported",
-          "severity": "error",
-          "scope": "reached",
-          "file": "src/check-specs.ts",
-          "line": 17,
-          "column": 3,
-          "endLine": 64,
-          "endColumn": 4,
-          "start": 821,
-          "end": 3479,
-          "message": "functions with optional or defaulted parameters as values, except where the target type spells the completed signature with required parameters (a '(x?: T) => R' function flows into a '(x: T | undefined) => R' slot, and a package/'any' slot takes any natively representable signature; otherwise call the function directly) are not supported yet",
-          "hint": "this form is valid TypeScript but does not compile yet \u2014 rewrite it with a supported equivalent of the construct the message names (https://scriptc.dev/limitations lists the boundary)",
-          "group": "SC1090-9e7c6f3d"
-        },
-        {
-          "code": "SC1090",
-          "category": "unsupported",
-          "severity": "error",
-          "scope": "reached",
-          "file": "src/terminal.ts",
-          "line": 42,
-          "column": 5,
-          "endLine": 49,
-          "endColumn": 6,
-          "start": 2579,
-          "end": 2890,
-          "message": "functions with optional or defaulted parameters as values, except where the target type spells the completed signature with required parameters (a '(x?: T) => R' function flows into a '(x: T | undefined) => R' slot, and a package/'any' slot takes any natively representable signature; otherwise call the function directly) are not supported yet",
-          "hint": "this form is valid TypeScript but does not compile yet \u2014 rewrite it with a supported equivalent of the construct the message names (https://scriptc.dev/limitations lists the boundary)",
-          "group": "SC1090-9e7c6f3d"
-        },
-        {
-          "code": "SC2020",
-          "category": "unsupported",
-          "severity": "error",
-          "scope": "reached",
-          "file": "src/terminal.ts",
-          "line": 67,
-          "column": 34,
-          "endLine": 67,
-          "endColumn": 39,
-          "start": 3736,
-          "end": 3741,
-          "message": "'a 'keypress' listener whose first parameter is 'string'' is part of the standard library types but has no scriptc lowering yet",
-          "hint": "the first argument is undefined for escape sequences \u2014 declare it as string | undefined",
-          "group": "SC2020-7de1846b"
-        },
-        {
-          "code": "SC1090",
-          "category": "unsupported",
-          "severity": "error",
-          "scope": "reached",
-          "file": "src/install.ts",
-          "line": 82,
-          "column": 3,
-          "endLine": 88,
-          "endColumn": 4,
-          "start": 4919,
-          "end": 5292,
-          "message": "functions with optional or defaulted parameters as values, except where the target type spells the completed signature with required parameters (a '(x?: T) => R' function flows into a '(x: T | undefined) => R' slot, and a package/'any' slot takes any natively representable signature; otherwise call the function directly) are not supported yet",
-          "hint": "this form is valid TypeScript but does not compile yet \u2014 rewrite it with a supported equivalent of the construct the message names (https://scriptc.dev/limitations lists the boundary)",
-          "group": "SC1090-9e7c6f3d"
-        },
-        {
-          "code": "SC2020",
-          "category": "unsupported",
-          "severity": "error",
-          "scope": "reached",
-          "file": "src/install.ts",
-          "line": 147,
-          "column": 47,
-          "endLine": 147,
-          "endColumn": 57,
-          "start": 9636,
-          "end": 9646,
-          "message": "'fs.promises.writeFile with the flag option' is part of the standard library types but has no scriptc lowering yet",
-          "hint": "the write truncates-or-creates (Node's default 'w'); other flags have no lowering",
-          "group": "SC2020-df5e5afc"
-        }
-      ]
+      "groups": [],
+      "diagnostics": []
     },
     {
       "schema": "scriptc-diagnostics",
@@ -186,58 +28,18 @@
       "compilerVersion": "0.4.5",
       "command": "coverage",
       "entry": "src/startup.ts",
-      "success": false,
-      "phase": "compile",
+      "success": true,
+      "phase": "complete",
       "stats": {
-        "statementsTotal": 26,
-        "statementsStatic": 25,
+        "statementsTotal": 75,
+        "statementsStatic": 75,
         "statementsDynamic": 0,
-        "statementsFailed": 1,
+        "statementsFailed": 0,
         "functionsSkipped": 0,
-        "percentStatic": 96
+        "percentStatic": 100
       },
-      "groups": [
-        {
-          "id": "SC1090-9e7c6f3d",
-          "code": "SC1090",
-          "category": "unsupported",
-          "severity": "error",
-          "scope": "reached",
-          "message": "functions with optional or defaulted parameters as values, except where the target type spells the completed signature with required parameters (a '(x?: T) => R' function flows into a '(x: T | undefined) => R' slot, and a package/'any' slot takes any natively representable signature; otherwise call the function directly)",
-          "hint": "this form is valid TypeScript but does not compile yet \u2014 rewrite it with a supported equivalent of the construct the message names (https://scriptc.dev/limitations lists the boundary)",
-          "count": 1,
-          "primary": {
-            "file": "src/check-specs.ts",
-            "line": 17,
-            "column": 3
-          },
-          "sites": [
-            {
-              "file": "src/check-specs.ts",
-              "line": 17,
-              "column": 3
-            }
-          ]
-        }
-      ],
-      "diagnostics": [
-        {
-          "code": "SC1090",
-          "category": "unsupported",
-          "severity": "error",
-          "scope": "reached",
-          "file": "src/check-specs.ts",
-          "line": 17,
-          "column": 3,
-          "endLine": 64,
-          "endColumn": 4,
-          "start": 821,
-          "end": 3479,
-          "message": "functions with optional or defaulted parameters as values, except where the target type spells the completed signature with required parameters (a '(x?: T) => R' function flows into a '(x: T | undefined) => R' slot, and a package/'any' slot takes any natively representable signature; otherwise call the function directly) are not supported yet",
-          "hint": "this form is valid TypeScript but does not compile yet \u2014 rewrite it with a supported equivalent of the construct the message names (https://scriptc.dev/limitations lists the boundary)",
-          "group": "SC1090-9e7c6f3d"
-        }
-      ]
+      "groups": [],
+      "diagnostics": []
     },
     {
       "schema": "scriptc-diagnostics",
@@ -245,96 +47,18 @@
       "compilerVersion": "0.4.5",
       "command": "coverage",
       "entry": "scripts/setup.ts",
-      "success": false,
-      "phase": "compile",
+      "success": true,
+      "phase": "complete",
       "stats": {
-        "statementsTotal": 36,
-        "statementsStatic": 34,
+        "statementsTotal": 38,
+        "statementsStatic": 38,
         "statementsDynamic": 4,
-        "statementsFailed": 2,
+        "statementsFailed": 0,
         "functionsSkipped": 0,
-        "percentStatic": 94
+        "percentStatic": 100
       },
-      "groups": [
-        {
-          "id": "SC1090-d51fb97c",
-          "code": "SC1090",
-          "category": "unsupported",
-          "severity": "error",
-          "scope": "reached",
-          "message": "'Uint8Array' values where 'string' is expected",
-          "hint": "this form is valid TypeScript but does not compile yet \u2014 rewrite it with a supported equivalent of the construct the message names (https://scriptc.dev/limitations lists the boundary)",
-          "count": 1,
-          "primary": {
-            "file": "scripts/setup.ts",
-            "line": 26,
-            "column": 28
-          },
-          "sites": [
-            {
-              "file": "scripts/setup.ts",
-              "line": 26,
-              "column": 28
-            }
-          ]
-        },
-        {
-          "id": "SC2020-83b00c91",
-          "code": "SC2020",
-          "category": "unsupported",
-          "severity": "error",
-          "scope": "reached",
-          "message": "'spawnSync stdio tuple entries beyond string literals' is part of the standard library types but has no scriptc lowering yet",
-          "hint": "the type checker sees the full standard library, but only the supported surface compiles (https://scriptc.dev/limitations)",
-          "count": 1,
-          "primary": {
-            "file": "scripts/setup.ts",
-            "line": 30,
-            "column": 162
-          },
-          "sites": [
-            {
-              "file": "scripts/setup.ts",
-              "line": 30,
-              "column": 162
-            }
-          ]
-        }
-      ],
-      "diagnostics": [
-        {
-          "code": "SC1090",
-          "category": "unsupported",
-          "severity": "error",
-          "scope": "reached",
-          "file": "scripts/setup.ts",
-          "line": 26,
-          "column": 28,
-          "endLine": 26,
-          "endColumn": 72,
-          "start": 1451,
-          "end": 1495,
-          "message": "'Uint8Array' values where 'string' is expected is not supported yet",
-          "hint": "this form is valid TypeScript but does not compile yet \u2014 rewrite it with a supported equivalent of the construct the message names (https://scriptc.dev/limitations lists the boundary)",
-          "group": "SC1090-d51fb97c"
-        },
-        {
-          "code": "SC2020",
-          "category": "unsupported",
-          "severity": "error",
-          "scope": "reached",
-          "file": "scripts/setup.ts",
-          "line": 30,
-          "column": 162,
-          "endLine": 30,
-          "endColumn": 183,
-          "start": 1886,
-          "end": 1907,
-          "message": "'spawnSync stdio tuple entries beyond string literals' is part of the standard library types but has no scriptc lowering yet",
-          "hint": "the type checker sees the full standard library, but only the supported surface compiles (https://scriptc.dev/limitations)",
-          "group": "SC2020-83b00c91"
-        }
-      ]
+      "groups": [],
+      "diagnostics": []
     }
   ]
 }

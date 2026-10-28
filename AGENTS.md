@@ -8,7 +8,7 @@ Keep generated output and temporary experiments out of committed source. Documen
 
 ## Build, test and development commands
 
-Galicia requires Node >=22.18. Run `npm ci --ignore-scripts`, `npm run check` for TypeScript, `npm test` for installer/checker behaviour, and `npm run measure` for named-encoding instruction counts. `node src/cli.ts init --project PATH` starts setup; `node scripts/download.ts --help` documents pinned downloads. Runtime needs no install/build. No `build` script exists. Static checks do not prove cross-model behaviour.
+Galicia requires Node >=22.18. Run `npm ci --ignore-scripts`, `npm run check` for TypeScript, `npm test` for installer/checker behaviour, and `npm run measure` for named-encoding instruction counts. `node src/cli.ts init --project PATH` starts setup; `node scripts/download.ts --help` documents pinned downloads. Runtime needs no install/build. No `build` script exists. Static checks do not prove cross-model behaviour. Native compiler checks and optional `GALICIA_NATIVE_CLI` parity test: see [native validation](docs/scriptc-coverage.md). Compiler requires Node >=24 plus platform linker/SDK; generated binaries stay under ignored `.scratch/`.
 
 When adding executable TypeScript, document its exact invocation and prerequisites in the relevant skill. If package scripts become necessary, define them in `package.json` and explain their purpose here. For Markdown changes, check links, paths and command examples before submitting.
 

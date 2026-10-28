@@ -91,6 +91,6 @@ npm run measure
 
 Development dependencies provide TypeScript checking and `cl100k_base` / `o200k_base` token measurements. Runtime remains dependency-free. Compare installed originals using `node scripts/measure.ts --help`. [Fixed behaviour scenarios](eval/README.md) distinguish static safeguards from cross-model behaviour, which needs recorded runs. Fewer words alone prove neither token savings nor equal quality.
 
-Native distribution: [scriptc coverage and blockers](docs/scriptc-coverage.md). Node remains required.
+Native distribution: [scriptc coverage and native validation](docs/scriptc-coverage.md). Node remains required.
 
 Research: [tool-output filtering, context pruning and proxies](docs/research.md). Attribution: [NOTICE.md](NOTICE.md).
