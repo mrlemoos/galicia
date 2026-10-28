@@ -3,17 +3,23 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "engines": { "node": ">=22.18.0" },
+  "engines": {
+    "node": ">=22.18.0"
+  },
   "scripts": {
     "init": "node src/cli.ts init",
     "check": "tsc --noEmit",
     "test": "node --test tests/*.test.ts",
     "measure": "node scripts/measure.ts",
-    "download": "node scripts/download.ts"
+    "download": "node scripts/download.ts",
+    "dev": "pnpm --filter @galicia/website dev",
+    "build": "pnpm --filter @galicia/website build",
+    "check:website": "pnpm --filter @galicia/website check"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
     "js-tiktoken": "^1.0.21",
     "typescript": "^5.9.3"
-  }
+  },
+  "packageManager": "pnpm@12.10.1"
 }

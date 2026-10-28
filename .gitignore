@@ -2,3 +2,7 @@ node_modules/
 .scratch/
 coverage/
 .DS_Store
+
+# Astro generated output
+website/.astro/
+website/dist/

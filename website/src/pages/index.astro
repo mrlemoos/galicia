@@ -1,0 +1,89 @@
+---
+import '../styles/global.css';
+const repo = 'https://github.com/mrlemoos/galicia';
+const skills = [
+  { name: 'terse', label: 'Say what matters.', text: 'Keep the evidence. Lose the filler. Concise communication with exact commands, contracts and uncertainty intact.', prompt: '$terse. What changed?', result: 'Auth expiry off by one. Regression fails at boundary; fix passes. Live behaviour unchecked.', file: 'terse/SKILL.md' },
+  { name: 'rubberduck', label: 'Decide before you build.', text: 'Work through unresolved decisions. Keep agreed answers, choose a questioning cadence and make the next step explicit.', prompt: '$rubberduck. Help me scope this change.', result: 'One decision first. Should invitations expire? Recommend 7 days. Keeps access bounded; allows a working week to accept.', file: 'rubberduck/SKILL.md' },
+  { name: 'spec', label: 'Give the work a shape.', text: 'Turn agreed discussion into a local specification. Capture scope, contracts and acceptance criteria for the next session.', prompt: '$spec. Capture what we agreed.', result: 'Scope: expiring invitations. Contract: reject after 7 days. Acceptance: boundary covered; existing members unaffected.', file: 'spec/SKILL.md' },
+  { name: 'breakdown', label: 'Make the next step small.', text: 'Split an agreed change into independently verifiable tickets, with explicit blockers and a clear order of work.', prompt: '$breakdown. Split the invitation spec.', result: '01. Add expiry contract + boundary check.\n02. Expose expiry in invitation UI.\nBlocked by 01. Verify each ticket independently.', file: 'breakdown/SKILL.md' },
+  { name: 'find-rc', label: 'Fix the cause.', text: 'Reproduce the failure, minimise it and test hypotheses. Make the regression prove the fix.', prompt: '$find-rc. Expired invitations still work.', result: 'Reproduce at expiry boundary. Compare stored timestamp with validation path. Test hypothesis before changing code.', file: 'find-rc/SKILL.md' },
+];
+---
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Five concise skills for coding agents. Spend less context, keep engineering judgement, and carry decisions between sessions in your repository." />
+    <meta name="theme-color" content="#f7f7f2" />
+    <link rel="icon" type="image/png" href="/galicia.png" />
+    <title>Galicia — Keep the judgement. Lose the overhead.</title>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header><nav aria-label="Main navigation"><a class="brand" href="#" aria-label="Galicia home"><img src="/galicia.png" width="32" height="32" alt="" />galicia</a><div class="nav-links"><a href="#skills">The skills</a><a href="#context">The approach</a><a href={repo}>GitHub <span aria-hidden="true">↗</span></a></div><a class="button small" href="#install">Get Galicia <span aria-hidden="true">↗</span></a></nav></header>
+    <main id="main">
+      <section class="hero">
+        <div class="eyebrow"><span class="status-dot"></span> A little less overhead. A lot more intent.</div>
+        <h1>Keep the judgement.<br /><span>Lose the overhead.</span></h1>
+        <p class="hero-copy">Your coding agent has enough to think about.<br class="desktop" /> Give it five focused skills and the context that matters.</p>
+        <div class="actions"><a class="button" href="#install">Set up your project <span aria-hidden="true">↗</span></a><a class="text-link" href="#skills">Meet the skills <span aria-hidden="true">↓</span></a></div>
+        <div class="hero-stage" role="img" aria-label="Galicia keeps project context and agent skills together">
+          <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+          <span class="floating-note note-one"><span class="note-icon">⌘</span> Less repeated context</span>
+          <span class="floating-note note-two"><span class="note-icon">✓</span> Decisions that stay decided</span>
+          <div class="icon-plinth"><img class="hero-icon" src="/galicia.png" width="260" height="260" alt="Galicia, a blue glass icon with a gold chalice and seven crosses" /></div>
+          <span class="floating-note note-three"><span class="note-icon">↗</span> A clear next step</span>
+          <div class="stage-caption">SMALL INSTRUCTIONS. CONSIDERED ENGINEERING.</div>
+        </div>
+        <div class="compatibility"><span>At home with your agent</span><div>Codex <i></i> Claude Code <i></i> Cursor <i></i> Grok</div></div>
+      </section>
+      <section class="skills section" id="skills">
+        <div class="section-heading"><div><p class="eyebrow">THE TOOLKIT</p><h2>Five skills.<br />Room to think.</h2></div><p>No elaborate ritual. Pick the skill for the job.<br />Keep the decisions and evidence in your repo.</p></div>
+        <div class="skill-workbench">
+          <div class="skill-tabs" role="tablist" aria-label="Explore skills">{skills.map((skill, i) => <button id={`tab-${skill.name}`} role="tab" aria-selected={i === 0 ? 'true' : 'false'} aria-controls={`panel-${skill.name}`} tabindex={i === 0 ? 0 : -1} data-index={i}><span class="tab-number">0{i + 1}</span><span>{skill.name}</span><span class="tab-arrow" aria-hidden="true">↗</span></button>)}</div>
+          <div class="skill-content">{skills.map((skill, i) => <div id={`panel-${skill.name}`} role="tabpanel" aria-labelledby={`tab-${skill.name}`} hidden={i !== 0} tabindex="0"><span class="skill-tag">/{skill.name}</span><h3>{skill.label}</h3><p>{skill.text}</p><div class="conversation"><div class="conversation-label">AN ILLUSTRATIVE EXCHANGE</div><div class="prompt">{skill.prompt}</div><div class="reply"><span class="reply-mark" aria-hidden="true">g.</span><p>{skill.result}</p></div></div><a class="text-link" href={`${repo}/blob/main/${skill.file}`}>Read the skill <span aria-hidden="true">↗</span></a></div>)}</div>
+        </div>
+      </section>
+      <section class="context section" id="context"><div class="context-copy"><p class="eyebrow">YOUR REPO. YOUR MEMORY.</p><h2>The next session<br />starts here.</h2><p>Agents forget. Your project shouldn't. Give every session a map to the right context, with decisions stored in local Markdown.</p><a class="text-link" href={`${repo}/blob/main/docs/context-layout.md`}>Explore the context layout <span aria-hidden="true">↗</span></a></div><div class="file-window"><div class="window-bar"><span></span><span></span><span></span><p>your-project/</p></div><div class="file-tree"><div><span>↳</span> AGENTS.md <small>Start here</small></div><div class="selected"><span>↳</span> context.md <small>The map</small></div><div><span>↳</span> docs/</div><div class="indent"><span>↳</span> Language.md <small>Shared meaning</small></div><div class="indent"><span>↳</span> adr/ <small>Decisions</small></div><div class="indent"><span>↳</span> specs/ <small>Agreed work</small></div></div><div class="file-foot">Read what's relevant. Keep what's agreed.</div></div></section>
+      <section class="principles section"><p class="eyebrow">LESS MACHINERY. MORE OWNERSHIP.</p><div class="principle-grid"><div><span class="principle-symbol">⌁</span><h3>Project-local.</h3><p>Readable files in your repository. Edit them, review them, carry them between sessions.</p></div><div><span class="principle-symbol">◎</span><h3>No extra service.</h3><p>No telemetry, proxy or model calls. Installer runtime has no dependencies.</p></div><div><span class="principle-symbol">≋</span><h3>Evidence stays.</h3><p>Concise instructions preserve exact contracts and uncertainty. Fewer words alone prove no savings.</p></div></div></section>
+      <section class="install section" id="install"><img src="/galicia.png" width="76" height="76" alt="" loading="lazy" /><p class="eyebrow">MAKE ROOM FOR THE WORK</p><h2>A small addition.<br />A more deliberate workflow.</h2><p>Run from your project's root. Choose your agents and skills.<br class="desktop" /> Preview every change before setup writes a file.</p><div class="install-command"><code id="install-code">curl -fsSL https://raw.githubusercontent.com/mrlemoos/galicia/main/scripts/setup.ts | node --input-type=module</code><button id="copy-command" aria-label="Copy installation command">Copy <span aria-hidden="true">⧉</span></button></div><p id="copy-status" class="copy-status" role="status" aria-live="polite"></p><p class="requirements">macOS or Linux · Node 22.18+ · curl and tar<br />Executes remote code. Review the <a href={`${repo}/blob/main/scripts/setup.ts`}>setup script</a> before running.</p><a class="text-link" href={`${repo}#install`}>Read installation details <span aria-hidden="true">↗</span></a></section>
+    </main>
+    <footer><a class="brand" href="#">galicia<span class="footer-note">Considered tools for coding agents.</span></a><div><a href={`${repo}/blob/main/docs/philosophy.md`}>Philosophy</a><a href={repo}>Source ↗</a><span>Made by <a href="https://mrlemoos.dev">Leo Lemos</a></span></div></footer>
+    <script>
+      const tabs = Array.from(document.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
+      function selectTab(index: number, focus = false) {
+        tabs.forEach((tab, i) => {
+          tab.setAttribute('aria-selected', String(i === index));
+          tab.tabIndex = i === index ? 0 : -1;
+          const panel = document.getElementById(tab.getAttribute('aria-controls')!);
+          if (panel) panel.hidden = i !== index;
+        });
+        if (focus) tabs[index]?.focus();
+      }
+      tabs.forEach((tab, index) => {
+        tab.addEventListener('click', () => selectTab(index));
+        tab.addEventListener('keydown', (event) => {
+          let next: number;
+          if (event.key === 'ArrowRight' || event.key === 'ArrowDown') next = (index + 1) % tabs.length;
+          else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') next = (index - 1 + tabs.length) % tabs.length;
+          else if (event.key === 'Home') next = 0;
+          else if (event.key === 'End') next = tabs.length - 1;
+          else return;
+          event.preventDefault();
+          selectTab(next, true);
+        });
+      });
+      const copy = document.querySelector<HTMLButtonElement>('#copy-command');
+      copy?.addEventListener('click', async () => {
+        const status = document.querySelector<HTMLElement>('#copy-status');
+        try {
+          await navigator.clipboard.writeText(document.querySelector('#install-code')!.textContent!);
+          if (status) status.textContent = 'Copied. Ready for your terminal.';
+        } catch {
+          if (status) status.textContent = 'Copy unavailable. Select the command to copy it manually.';
+        }
+      });
+    </script>
+  </body>
+</html>

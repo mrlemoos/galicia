@@ -88,10 +88,10 @@ Checker reads bounded `specs/` trees, flags explicit supersession, abandonment a
 ## Validation
 
 ```sh
-npm ci --ignore-scripts
-npm run check
-npm test
-npm run measure
+pnpm install --frozen-lockfile
+pnpm run check
+pnpm test
+pnpm run measure
 ```
 
 Development dependencies provide TypeScript checking and `cl100k_base` / `o200k_base` token measurements. Runtime remains dependency-free. Compare installed originals using `node scripts/measure.ts --help`. [Fixed behaviour scenarios](eval/README.md) distinguish static safeguards from cross-model behaviour, which needs recorded runs. Fewer words alone prove neither token savings nor equal quality.
@@ -99,3 +99,16 @@ Development dependencies provide TypeScript checking and `cl100k_base` / `o200k_
 Native distribution: [scriptc coverage and native validation](docs/scriptc-coverage.md). Node remains required.
 
 Research: [tool-output filtering, context pruning and proxies](docs/research.md). Attribution: [NOTICE.md](NOTICE.md).
+
+## Workspace development
+
+Requires Node 22.23.4+ and pnpm 12.10.1. Root package contains the installer, checker and skills. `website/` contains the Astro marketing site.
+
+```sh
+pnpm install --frozen-lockfile
+pnpm dev
+pnpm check:website
+pnpm build
+```
+
+`pnpm dev` serves the website at http://localhost:4321. `pnpm build` writes static output to `website/dist/`. See [website guide](website/README.md).
