@@ -1,9 +1,13 @@
 <p align="center"><img src="assets/galicia.png" width="256" alt="Galicia glass icon with a gold chalice, pearl host and seven white crosses." /></p>
 <h1 align="center">Galicia</h1>
 
-Galicia is an engineering philosophy and five agent skills. Spend context, tokens, tools and human attention where they improve outcomes. Keep evidence, clarity and correctness.
+**Spend less context. Keep engineering judgement.**
 
-Skills use caveman prose. No emojis, filler or repeated instructions. Exact contracts, uncertainty and failure handling stay explicit. [Read the philosophy](docs/philosophy.md).
+Agents reread whole docs, repeat checks and ask questions the repo already answers. You pay in tokens, waiting and attention.
+
+Galicia gives coding agents five concise skills and a map to the context each task needs. Resolve decisions, write specs, split work and find root causes. Keep agreed answers and decisions in your repo, ready for the next session.
+
+Spend effort where it earns trust. Preserve evidence, exact contracts and uncertainty. Everything stays project-local, in files you can read and edit. [Read the philosophy](docs/philosophy.md).
 
 | Skill | Job |
 |---|---|
