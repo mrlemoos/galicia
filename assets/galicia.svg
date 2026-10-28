@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 240" role="img" aria-labelledby="title desc">
+  <title id="title">Galicia</title>
+  <desc id="desc">Simplified Galician arms: crowned blue shield, gold chalice, silver host and seven silver crosses, beside Galicia wordmark.</desc>
+  <defs>
+    <path id="cross" d="M-3-10H3V-3H10V3H3V10H-3V3H-10V-3H-3Z"/>
+  </defs>
+  <rect width="680" height="240" rx="20" fill="#091d32"/>
+  <g transform="translate(36 16)">
+    <path d="M23 62H149V135C149 173 121 195 86 211C51 195 23 173 23 135Z" fill="#1675b6" stroke="#8ecbd9" stroke-width="2"/>
+    <g fill="#f5f1df">
+      <use href="#cross" x="86" y="82"/>
+      <use href="#cross" x="46" y="106"/><use href="#cross" x="126" y="106"/>
+      <use href="#cross" x="46" y="139"/><use href="#cross" x="126" y="139"/>
+      <use href="#cross" x="57" y="171"/><use href="#cross" x="115" y="171"/>
+      <circle cx="86" cy="111" r="12"/>
+    </g>
+    <path d="M68 130H104C104 145 98 151 90 153V176H103V182H69V176H82V153C74 151 68 145 68 130Z" fill="#dfb760"/>
+    <g stroke="#dfb760" stroke-width="3" fill="none" stroke-linejoin="round">
+      <path d="M43 57L38 36L55 44L68 30L86 43L104 30L117 44L134 36L129 57Z" fill="#b34b4d"/>
+      <path d="M44 55H128V62H44Z" fill="#dfb760"/>
+      <path d="M43 35C41 14 63 13 86 29C109 13 131 14 129 35M68 29Q67 9 86 10Q105 9 104 29M86 11V40"/>
+      <circle cx="86" cy="10" r="5" fill="#1675b6"/>
+      <path d="M86 0V5M83 2H89"/>
+    </g>
+  </g>
+  <text x="226" y="135" fill="#f5f1df" font-family="Georgia, serif" font-size="88" letter-spacing="-3">galicia</text>
+  <path d="M230 158H291" stroke="#68c6b5" stroke-width="3"/>
+  <text x="230" y="187" fill="#92b3c6" font-family="system-ui, sans-serif" font-size="14" letter-spacing="1.5">SPEND LESS. KEEP MEANING.</text>
+</svg>
