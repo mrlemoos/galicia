@@ -1,4 +1,4 @@
-import { readFile, lstat, mkdir, writeFile, rename, unlink, realpath } from 'node:fs/promises';
+import { readFile, lstat, mkdir, writeFile, open, rename, unlink, realpath } from 'node:fs/promises';
 import { resolve, dirname, parse, relative, join } from 'node:path';
 import { homedir } from 'node:os';
 import { createHash, randomUUID } from 'node:crypto';
@@ -45,18 +45,19 @@ export function mergeHook(body: string | null, agent: Agent): string {
   const config = body === null ? {} : object(JSON.parse(body));
   const hooks = config.hooks === undefined ? {} : object(config.hooks);
   const event = agent === 'cursor' ? 'sessionStart' : 'SessionStart';
-  const entries = hooks[event] === undefined ? [] : hooks[event];
-  if (!Array.isArray(entries)) throw new Error(`Invalid ${event} hooks array.`);
+  const configured = hooks[event];
+  if (configured !== undefined && !Array.isArray(configured)) throw new Error(`Invalid ${event} hooks array.`);
+  const entries: unknown[] = configured === undefined ? [] : configured;
   const command = agent === 'codex'
     ? 'node "$(git rev-parse --show-toplevel)/.galicia/startup.ts" codex'
     : agent === 'claude'
       ? 'node "$CLAUDE_PROJECT_DIR/.galicia/startup.ts" claude'
       : 'node .galicia/startup.ts cursor';
   const handler = { type: 'command', command, timeout: 5 };
-  const already = entries.some(entry => {
+  const already = entries.some((entry: unknown) => {
     const item = object(entry);
     if (agent === 'cursor') return item.command === command;
-    return Array.isArray(item.hooks) && item.hooks.some(value => object(value).command === command);
+    return Array.isArray(item.hooks) && item.hooks.some((value: unknown) => object(value).command === command);
   });
   if (!already) entries.push(agent === 'cursor' ? { command, timeout: 5 } : { matcher: 'startup|resume', hooks: [handler] });
   hooks[event] = entries;
@@ -79,7 +80,7 @@ export async function planInstall(options: Options, source = sourceRoot): Promis
   const receipt = await existing(resolve(root, '.galicia/manifest.json'));
   const owned = receipt ? object(object(JSON.parse(receipt)).files) : {};
   const changes: Change[] = [];
-  async function add(path: string, after: string, merge = false) {
+  async function add(path: string, after: string, merge: boolean) {
     const target = resolve(root, path);
     await safePath(root, target);
     const before = await existing(target);
@@ -90,15 +91,15 @@ export async function planInstall(options: Options, source = sourceRoot): Promis
   for (const skill of options.skills) {
     const text = await load(`${skill}/SKILL.md`);
     // Cursor also discovers .claude skills; use one copy when Claude selected.
-    if (options.agents.includes('claude')) await add(`.claude/skills/${skill}/SKILL.md`, text);
-    else if (options.agents.includes('codex') || options.agents.includes('cursor')) await add(`.agents/skills/${skill}/SKILL.md`, text);
-    if (options.agents.includes('grok')) await add(`.galicia/prompts/${skill}.md`, text.replace(/^---\n[\s\S]*?\n---\n/, ''));
-    if (options.agents.includes('codex') && options.agents.includes('claude')) await add(`.agents/skills/${skill}/SKILL.md`, text);
+    if (options.agents.includes('claude')) await add(`.claude/skills/${skill}/SKILL.md`, text, false);
+    else if (options.agents.includes('codex') || options.agents.includes('cursor')) await add(`.agents/skills/${skill}/SKILL.md`, text, false);
+    if (options.agents.includes('grok')) await add(`.galicia/prompts/${skill}.md`, text.replace(/^---\n[\s\S]*?\n---\n/, ''), false);
+    if (options.agents.includes('codex') && options.agents.includes('claude')) await add(`.agents/skills/${skill}/SKILL.md`, text, false);
   }
   for (const [path, template] of Object.entries({ 'context.md': 'context.md', 'docs/Language.md': 'language.md', 'docs/adr/README.md': 'adr-readme.md', 'docs/specs/README.md': 'specs-readme.md' })) {
     await safePath(root, resolve(root, path));
     // Existing domain context remains authoritative, even when Galicia generated it.
-    await add(path, await existing(resolve(root, path)) ?? await load(`templates/${template}`));
+    await add(path, await existing(resolve(root, path)) ?? await load(`templates/${template}`), false);
   }
   for (const [path, body] of [['AGENTS.md', guidance], ...(options.agents.includes('claude') ? [['CLAUDE.md', '@AGENTS.md\n']] : [])]) {
     await safePath(root, resolve(root, path!));
@@ -111,13 +112,13 @@ export async function planInstall(options: Options, source = sourceRoot): Promis
     const existingBlock = before?.match(/<!-- galicia:start -->[\s\S]*?<!-- galicia:end -->/)?.[0];
     await add(path!, after, !existingBlock || existingBlock === block);
   }
-  await add('.galicia/config.json', `${JSON.stringify({ version: 1, agents: options.agents, skills: options.skills, cadence: options.cadence, hooks: options.hooks }, null, 2)}\n`);
-  await add('.galicia/package.json', '{"private":true,"type":"module"}\n');
-  await add('.galicia/check-specs.ts', await load('src/check-specs.ts'));
-  await add('.galicia/startup.ts', await load('src/startup.ts'));
-  await add('.galicia/check.ts', "import { scanSpecs, scanSummary } from './check-specs.ts';\nimport { dirname, resolve } from 'node:path';\nimport { fileURLToPath } from 'node:url';\nconst scan = await scanSpecs(resolve(dirname(fileURLToPath(import.meta.url)), '..'));\nconsole.log(scanSummary(scan) || `No metadata flags in ${scan.inspected} inspected specs. Semantic implementation review not performed.`);\n");
-  await add('.galicia/NOTICE.md', await load('NOTICE.md'));
-  await add('.galicia/LICENSE', await load('LICENSE'));
+  await add('.galicia/config.json', `${JSON.stringify({ version: 1, agents: options.agents, skills: options.skills, cadence: options.cadence, hooks: options.hooks }, null, 2)}\n`, false);
+  await add('.galicia/package.json', '{"private":true,"type":"module"}\n', false);
+  await add('.galicia/check-specs.ts', await load('src/check-specs.ts'), false);
+  await add('.galicia/startup.ts', await load('src/startup.ts'), false);
+  await add('.galicia/check.ts', "import { scanSpecs, scanSummary } from './check-specs.ts';\nimport { dirname, resolve } from 'node:path';\nimport { fileURLToPath } from 'node:url';\nconst scan = await scanSpecs(resolve(dirname(fileURLToPath(import.meta.url)), '..'));\nconsole.log(scanSummary(scan) || `No metadata flags in ${scan.inspected} inspected specs. Semantic implementation review not performed.`);\n", false);
+  await add('.galicia/NOTICE.md', await load('NOTICE.md'), false);
+  await add('.galicia/LICENSE', await load('LICENSE'), false);
   if (options.hooks) for (const agent of options.agents) {
     if (agent === 'grok') continue;
     const path = agent === 'claude' ? '.claude/settings.json' : `.${agent}/hooks.json`;
@@ -143,8 +144,11 @@ export async function applyPlan(root: string, changes: Change[]): Promise<void> 
       await safePath(root, path);
       await mkdir(dirname(path), { recursive: true });
       const temp = `${path}.${randomUUID()}.tmp`;
+      // Open before cleanup scope: a colliding file belongs to somebody else.
+      const handle = await open(temp, 'wx');
       try {
-        await writeFile(temp, change.after, { flag: 'wx' });
+        try { await handle.writeFile(change.after); }
+        finally { await handle.close(); }
         await rename(temp, path);
       } finally { await unlink(temp).catch(error => { if (error.code !== 'ENOENT') throw error; }); }
       written.push(change);

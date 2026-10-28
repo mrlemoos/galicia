@@ -120,3 +120,27 @@ test('download script rejects mutable refs and unsafe repository strings before 
     assert.doesNotMatch(run.stdout, /downloading/);
   }
 });
+
+test('exclusive staging collision preserves foreign file and rolls back earlier writes', async () => fixture(async root => {
+  const crypto = (await import('node:crypto')).default;
+  const { syncBuiltinESMExports } = await import('node:module');
+  const original = crypto.randomUUID;
+  const id = '00000000-0000-4000-8000-000000000000';
+  const collision = join(root, `second.md.${id}.tmp`);
+  await writeFile(collision, 'Foreign staged content.');
+  await writeFile(join(root, 'first.md'), 'Before.');
+  try {
+    crypto.randomUUID = () => id;
+    syncBuiltinESMExports();
+    await assert.rejects(applyPlan(root, [
+      { path: 'first.md', before: 'Before.', after: 'After.', state: 'update' },
+      { path: 'second.md', before: null, after: 'New.', state: 'create' },
+    ]), { code: 'EEXIST' });
+    assert.equal(await readFile(collision, 'utf8'), 'Foreign staged content.');
+    assert.equal(await readFile(join(root, 'first.md'), 'utf8'), 'Before.');
+    await assert.rejects(readFile(join(root, 'second.md')), { code: 'ENOENT' });
+  } finally {
+    crypto.randomUUID = original;
+    syncBuiltinESMExports();
+  }
+}));

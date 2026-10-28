@@ -1,3 +1,4 @@
+import type { Key } from 'node:readline';
 import { emitKeypressEvents } from 'node:readline';
 import { createInterface } from 'node:readline/promises';
 
@@ -16,7 +17,7 @@ export async function ask(question: string, fallback = ''): Promise<string> {
   if (!process.stdin.isTTY) throw new Error('Non-interactive input: provide explicit flags. See --help.');
   const rl = createInterface({ input: process.stdin, output: process.stdout });
   try { return (await rl.question(`${question}${fallback ? ` [${fallback}]` : ''} `)).trim() || fallback; }
-  finally { rl.close(); }
+  finally { rl.close(); process.stdin.pause(); }
 }
 
 export async function choose(title: string, choices: readonly string[], defaults: string[], multiple = true): Promise<string[]> {
@@ -39,15 +40,14 @@ export async function choose(title: string, choices: readonly string[], defaults
       console.log(`\x1b[2K${ink.muted(multiple ? '  arrows move / space select / enter continue' : '  arrows move / enter select')}`);
       rendered = true;
     }
-    function finish(error?: Error) {
-      process.stdin.off('keypress', onKey);
+    function finish(error: Error | undefined) {
       process.stdin.setRawMode(false);
       process.stdin.pause();
       process.stdout.write('\x1b[?25h');
       if (error) reject(error);
       else accept(multiple ? choices.filter(v => selected.has(v)) : [choices[index]!]);
     }
-    function onKey(_text: string, key: { name?: string; ctrl?: boolean }) {
+    function onKey(_text: string | undefined, key: Key) {
       if (key.ctrl && key.name === 'c' || key.name === 'escape') return finish(new Error('Cancelled. No installation started.'));
       if (key.name === 'up') index = (index + choices.length - 1) % choices.length;
       if (key.name === 'down') index = (index + 1) % choices.length;
@@ -56,15 +56,21 @@ export async function choose(title: string, choices: readonly string[], defaults
         if (selected.has(choice)) selected.delete(choice); else selected.add(choice);
       }
       if (key.name === 'return') {
-        if (multiple && !selected.size) { process.stdout.write('\x07'); return; }
-        return finish();
+        if (multiple && !selected.size) {
+          process.stdout.write('\x07');
+          process.stdin.once('keypress', onKey);
+          return;
+        }
+        return finish(undefined);
       }
+      process.stdin.once('keypress', onKey);
       draw();
     }
     emitKeypressEvents(process.stdin);
     process.stdin.setRawMode(true);
     process.stdin.resume();
-    process.stdin.on('keypress', onKey);
+    // One-shot listeners need no keypress removal, unsupported by native runtime.
+    process.stdin.once('keypress', onKey);
     process.stdout.write('\x1b[?25l');
     draw();
   });

@@ -50,3 +50,6 @@ try {
   console.error(`Galicia: ${(error as Error).message}`);
   process.exitCode = 1;
 }
+
+// All work and terminal cleanup completed. Native readline can retain input handles.
+if (process.stdin.isTTY) process.exit(Number(process.exitCode ?? 0));
