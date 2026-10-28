@@ -1,4 +1,5 @@
 <p align="center"><img src="assets/galicia.png" width="256" alt="Galicia glass icon with a gold chalice, pearl host and seven white crosses." /></p>
+<h1 align="center">Galicia</h1>
 
 Galicia is an engineering philosophy and five agent skills. Spend context, tokens, tools and human attention where they improve outcomes. Keep evidence, clarity and correctness.
 
