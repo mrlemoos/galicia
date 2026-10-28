@@ -1,4 +1,4 @@
-<p align="center"><img src="assets/galicia.svg" width="680" alt="Galicia, crowned blue shield with gold chalice and seven silver crosses. Spend less. Keep meaning." /></p>
+<p align="center"><img src="assets/galicia.png" width="256" alt="Galicia glass icon with a gold chalice, pearl host and seven white crosses." /></p>
 
 Galicia is an engineering philosophy and five agent skills. Spend context, tokens, tools and human attention where they improve outcomes. Keep evidence, clarity and correctness.
 
