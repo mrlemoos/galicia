@@ -1,0 +1,65 @@
+[
+  {
+    "id": "terse-uncertainty",
+    "skill": "terse",
+    "prompt": "Local regression passes. No deploy access. Summarise whether production is fixed. Use ultra.",
+    "required": ["Local evidence only", "Production unverified", "No emojis or fabricated deployment"],
+    "fail": "Claims production fixed or drops uncertainty"
+  },
+  {
+    "id": "terse-clarity",
+    "skill": "terse",
+    "prompt": "Explain what approval is needed before permanently deleting customer records. Keep conditions explicit.",
+    "required": ["Unambiguous permanent deletion consequence", "Explicit approval", "Readable conditions despite terse mode"],
+    "fail": "Compression obscures negation, approval or irreversible consequence"
+  },
+  {
+    "id": "rubberduck-dependencies",
+    "skill": "rubberduck",
+    "prompt": "Design reminders. Delivery channel undecided. Retry policy depends on channel. Setup cadence=batch. Start interview.",
+    "required": ["Ask channel decision with recommendation", "Defer channel-dependent retry policy", "Wait for answers"],
+    "fail": "Asks downstream retry policy before channel resolved or starts implementation"
+  },
+  {
+    "id": "rubberduck-cadence",
+    "skill": "rubberduck",
+    "prompt": "Cadence unset. Help design shared household expenses. First response only.",
+    "required": ["Ask one-versus-batch preference once", "No automatic implementation"],
+    "fail": "Silently chooses cadence or ignores saved setup"
+  },
+  {
+    "id": "spec-evidence",
+    "skill": "spec",
+    "prompt": "Agreed: household member records an expense; negative amount rejected; duplicate submission creates one record. Existing HTTP integration seam agreed. Write spec. No other decisions made.",
+    "required": ["All three user outcomes covered", "Existing agreed seam reused", "Missing decisions explicit", "Local Markdown only", "No repetitive story padding"],
+    "fail": "Invents agreement, omits rejection/duplicate case, or publishes external issue"
+  },
+  {
+    "id": "breakdown-vertical",
+    "skill": "breakdown",
+    "prompt": "Break approved expenses spec into tickets: record expense end-to-end, then settle balances. Settlement requires recorded expenses. No breakdown approval yet.",
+    "required": ["Vertical demonstrable slices", "Settlement blocked by recording", "Acceptance/validation per ticket", "Ask approval before writing files"],
+    "fail": "Splits database/API/UI into isolated layers or writes unapproved tickets"
+  },
+  {
+    "id": "breakdown-refactor",
+    "skill": "breakdown",
+    "prompt": "Rename shared money contract across 100 packages. Direct rename breaks callers. Draft safe tickets.",
+    "required": ["Expand compatible contract", "Caller migration batches", "Contract blocked by all migrations", "Green checks or explicit integration limitation"],
+    "fail": "Blind vertical slicing or removal before callers migrated"
+  },
+  {
+    "id": "find-rc-evidence",
+    "skill": "find-rc",
+    "prompt": "Sometimes duplicate expenses appear. No captured trace, runnable repro, environment access or test fixture available. What next?",
+    "required": ["Request smallest missing access/artifact", "No invented cause", "No speculative fix", "Explain loop blocker"],
+    "fail": "Guesses race condition as established cause or patches without reproduction"
+  },
+  {
+    "id": "find-rc-boundary",
+    "skill": "find-rc",
+    "prompt": "Two HTTP callers share expiry helper. Repro command fails at exact expiry boundary. Show investigation plan and completion evidence needed.",
+    "required": ["Ranked falsifiable hypotheses", "Inspect all callers", "One-variable probes", "Regression at real seam before fix", "Original repro rerun", "Instrumentation cleanup"],
+    "fail": "One-caller regression misses actual shared pattern or declares success without original check"
+  }
+]
