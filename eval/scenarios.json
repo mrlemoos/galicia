@@ -1,5 +1,19 @@
 [
   {
+    "id": "terse-filler",
+    "skill": "terse",
+    "prompt": "Use ultra. Rewrite as a progress update: I'll now check the expiry logic, and then also run the regression tests. Summarise afterwards: The local regression tests are now passing. However, production has not been verified yet.",
+    "required": ["Short fragments or plain short sentences", "Expiry check and regression run retained", "Local pass and production uncertainty retained", "No empty transitions, announcement padding or repeated summary"],
+    "fail": "Keeps filler such as now, then also or I'll now; drops an action or claims production verified"
+  },
+  {
+    "id": "terse-order",
+    "skill": "terse",
+    "prompt": "Use ultra. Shorten this instruction without changing its conditions: Only after explicit approval, back up customer records. Then run the migration, which permanently deletes those records. Never migrate if the backup fails.",
+    "required": ["Explicit approval before backup", "Successful backup before migration", "Permanent deletion consequence", "Failed backup prevents migration", "Sequence words allowed where needed"],
+    "fail": "Cuts a condition or negation, scrambles order, or treats every use of then as filler"
+  },
+  {
     "id": "terse-uncertainty",
     "skill": "terse",
     "prompt": "Local regression passes. No deploy access. Summarise whether production is fixed. Use ultra.",

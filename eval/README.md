@@ -21,4 +21,4 @@ No provider credentials or paid model runs required for local build. `npm test` 
 - `spec`: distinct user outcomes replace mandatory extensive repetitive stories. Paths may navigate context; implementation recipes discouraged. Local Markdown replaces tracker publishing.
 - `breakdown`: same vertical/blocking/approval safeguards; local Markdown only, no external implement skill dependency.
 - `find-rc`: preserves symptom-specific failing loop, reduction, falsifiable hypotheses, one-variable probes, real-seam regression and cleanup. Reproduction limitations must remain explicit.
-- `terse`: adds resource guidance and honest hidden-reasoning limits; no percentage savings promise.
+- `terse`: adds resource guidance and honest hidden-reasoning limits; no percentage savings promise. Filler and order scenarios check sentence compression against preserved conditions.
