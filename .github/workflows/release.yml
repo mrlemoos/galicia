@@ -61,7 +61,7 @@ jobs:
         with:
           name: homebrew-release
           path: release
-      - uses: Homebrew/actions/setup-homebrew@master
+      - uses: Homebrew/actions/setup-homebrew@main
       - name: Test archive through a local tap
         shell: bash
         run: |
