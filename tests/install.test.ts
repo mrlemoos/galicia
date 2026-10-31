@@ -7,6 +7,8 @@ import { spawnSync } from 'node:child_process';
 import { planInstall, applyPlan, mergeHook, sourceRoot } from '../src/install.ts';
 import type { Options } from '../src/install.ts';
 
+process.env.GALICIA_NO_UPDATE_CHECK = '1';
+
 async function fixture(run: (root: string) => Promise<void>) {
   const root = await mkdtemp(join(tmpdir(), 'galicia-test-'));
   try { await run(root); } finally { await rm(root, { recursive: true, force: true }); }

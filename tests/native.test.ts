@@ -6,6 +6,7 @@ import { join, resolve } from 'node:path';
 import { spawnSync } from 'node:child_process';
 
 const binary = process.env.GALICIA_NATIVE_CLI;
+process.env.GALICIA_NO_UPDATE_CHECK = '1';
 
 test('native CLI matches Node setup, rerun, conflicts and checker', { skip: !binary }, async () => {
   const temporary = await mkdtemp(join(tmpdir(), 'galicia-native-test-'));

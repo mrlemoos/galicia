@@ -19,7 +19,26 @@ Spend effort where it earns trust. Preserve evidence, exact contracts and uncert
 
 ## Install
 
-Run from your project's root in a macOS or Linux terminal. Requires **Node 22.18+**, curl and tar.
+Homebrew, macOS or Linux:
+
+```sh
+brew tap mrlemoos/galicia https://github.com/mrlemoos/galicia
+brew install mrlemoos/galicia/galicia
+cd /path/to/project
+galicia init
+```
+
+Homebrew installs the CLI and Node. Skills, context and hooks stay in the chosen project. The explicit tap URL uses this repository; no separate tap repository required. Homebrew may ask you to trust the formula. Available after the first tagged release publishes `Formula/galicia.rb`. [Release and local validation guide](docs/homebrew.md).
+
+`galicia --version` prints the installed version. `galicia init` and `galicia check` check the latest public stable GitHub release. Any different version prints a reminder and command:
+
+```sh
+brew update && brew upgrade mrlemoos/galicia/galicia
+```
+
+Lookup capped at 1.5 seconds, runs alongside setup, writes no cache. Offline, rate-limited or invalid responses stay silent. Help/version make no request. Set `GALICIA_NO_UPDATE_CHECK=1` to disable the lookup. No telemetry or project contents sent. Upgrading the CLI leaves existing projects unchanged; rerun `galicia init` in each project to review updates. Customised generated files still require conflict resolution.
+
+Without Homebrew, run the pinned bootstrap from your project's root. Requires **Node 22.18+**, curl and tar.
 
 ```sh
 curl -fsSL https://raw.githubusercontent.com/mrlemoos/galicia/main/scripts/setup.ts | node --input-type=module
@@ -32,11 +51,11 @@ From an existing checkout, use `node src/cli.ts init --project /absolute/path/to
 Arrow keys move, space selects, enter continues. Setup chooses agents, skills, grilling cadence and optional hooks, then previews files. `NO_COLOR=1` uses plain numbered prompts. Existing context stays authoritative. Edited generated files cause a conflict; installer writes nothing until conflicts resolved. Repeat identical setup makes no changes.
 
 ```sh
-node src/cli.ts init --project /absolute/path/to/project --agents codex,claude,cursor,grok --cadence ask --hooks --dry-run
-node src/cli.ts init --project /absolute/path/to/project --agents codex --cadence one --yes
+galicia init --project /absolute/path/to/project --agents codex,claude,cursor,grok --cadence ask --hooks --dry-run
+galicia init --project /absolute/path/to/project --agents codex --cadence one --yes
 ```
 
-`--dry-run` shows before/after contents. `--yes` accepts the displayed plan. Hooks are opt-in. All installs project-local, never home/global. No telemetry or model calls. Different target selections add/update selected files; they do not delete previously installed skills or hooks. Review removal manually.
+`--dry-run` shows before/after contents. `--yes` accepts the displayed plan. Hooks are opt-in. Skills/context remain project-local. No telemetry or model calls. Different target selections add/update selected files; they do not delete previously installed skills or hooks. Review removal manually.
 
 ## Choose an exact revision
 

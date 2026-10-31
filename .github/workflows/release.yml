@@ -1,0 +1,90 @@
+name: Release Homebrew CLI
+
+on:
+  push:
+    tags: ["v*.*.*"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: galicia-release
+  cancel-in-progress: false
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22.23.4"
+      - uses: pnpm/action-setup@v4
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run check
+      - run: pnpm test
+      - run: node scripts/release.ts --tag "$RELEASE_TAG"
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: homebrew-release
+          path: .scratch/release/
+
+  homebrew:
+    needs: package
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: homebrew-release
+          path: release
+      - uses: Homebrew/actions/setup-homebrew@master
+      - name: Test archive through a local tap
+        shell: bash
+        run: |
+          brew tap-new local/galicia
+          formula="$(brew --repository local/galicia)/Formula/galicia.rb"
+          cp release/galicia.rb "$formula"
+          archive="$(find "$PWD/release" -name 'galicia-*.tar.gz')"
+          sed -i.bak "s|https://github.com/mrlemoos/galicia/releases/download/[^\"]*|file://$archive|" "$formula"
+          if brew help trust >/dev/null 2>&1; then
+            brew trust --formula local/galicia/galicia
+          fi
+          brew install --build-from-source local/galicia/galicia
+          brew test local/galicia/galicia
+
+  publish:
+    needs: homebrew
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22.23.4"
+      - uses: actions/download-artifact@v4
+        with:
+          name: homebrew-release
+          path: .scratch/release
+      - name: Publish archive and formula
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          node --input-type=module -e 'import { readFileSync } from "node:fs"; if (`v${JSON.parse(readFileSync("package.json", "utf8")).version}` !== process.env.RELEASE_TAG) throw Error("Release tag no longer matches main package version");'
+          gh release create "$RELEASE_TAG" .scratch/release/* --verify-tag --generate-notes --draft
+          mkdir -p Formula
+          cp .scratch/release/galicia.rb Formula/galicia.rb
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add Formula/galicia.rb
+          git commit -m "Update Galicia Homebrew formula to $RELEASE_TAG"
+          git push origin HEAD:main
+          gh release edit "$RELEASE_TAG" --draft=false --latest

@@ -5,6 +5,8 @@ import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { spawnSync } from 'node:child_process';
 
+process.env.GALICIA_NO_UPDATE_CHECK = '1';
+
 test('piped setup installs pinned archive without Git; download failures return non-zero', async () => {
   const temporary = await mkdtemp(join(tmpdir(), 'galicia-bootstrap-test-'));
   try {

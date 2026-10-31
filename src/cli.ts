@@ -4,18 +4,23 @@ import { scanSpecs, scanSummary } from './check-specs.ts';
 import { agents, skills, planInstall, applyPlan } from './install.ts';
 import type { Agent, Skill, Options } from './install.ts';
 import { ask, banner, choose, ink } from './terminal.ts';
+import { installedVersion } from './version.ts';
+import { updateNotice } from './update.ts';
 
-const help = `galicia / resource-conscious engineering\n\nNode >=22.18. Project-local only.\n\n  node src/cli.ts init [--project PATH]\n  node src/cli.ts init --agents codex,claude,cursor,grok --skills terse,rubberduck,spec,breakdown,find-rc --cadence ask --hooks --yes\n  node src/cli.ts init --agents codex --cadence one --dry-run\n  node src/cli.ts check [--project PATH]\n\n  --agents     codex,claude,cursor,grok\n  --skills     selected skill names; default all\n  --cadence    ask,one,batch; default ask for non-interactive use\n  --hooks      merge project startup hooks; off unless selected\n  --dry-run    preview paths and full contents; no writes\n  --yes        apply displayed plan without confirmation\n  --help       show usage\n\nConflicts abort installation; existing user edits preserved. Grok gets pasteable Markdown, no hook.\nDownload pinned source: node scripts/download.ts --help\n`;
+const help = `galicia / resource-conscious engineering\n\nNode >=22.18. Skills and context stay project-local.\n\n  galicia init [--project PATH]\n  galicia init --agents codex,claude,cursor,grok --skills terse,rubberduck,spec,breakdown,find-rc --cadence ask --hooks --yes\n  galicia init --agents codex --cadence one --dry-run\n  galicia check [--project PATH]\n  galicia --version\n\n  --agents     codex,claude,cursor,grok\n  --skills     selected skill names; default all\n  --cadence    ask,one,batch; default ask for non-interactive use\n  --hooks      merge project startup hooks; off unless selected\n  --dry-run    preview paths and full contents; no writes\n  --yes        apply displayed plan without confirmation\n  --help       show usage\n  --version    show installed version\n\nConflicts abort installation; existing user edits preserved. Grok gets pasteable Markdown, no hook.\nSource checkout: node src/cli.ts <command>\nGALICIA_NO_UPDATE_CHECK=1 skips the release lookup. Help/version work offline.\nDownload pinned source: node scripts/download.ts --help\n`;
 
+let notice: Promise<string | null> | undefined;
 try {
   const { values, positionals } = parseArgs({ allowPositionals: true, options: {
     project: { type: 'string' }, agents: { type: 'string' }, skills: { type: 'string' }, cadence: { type: 'string' },
-    hooks: { type: 'boolean' }, 'dry-run': { type: 'boolean' }, yes: { type: 'boolean' }, help: { type: 'boolean' },
+    hooks: { type: 'boolean' }, 'dry-run': { type: 'boolean' }, yes: { type: 'boolean' }, help: { type: 'boolean' }, version: { type: 'boolean' },
   } });
-  if (values.help || !positionals.length) console.log(help);
+  if (values.version) console.log(await installedVersion());
+  else if (values.help || !positionals.length) console.log(help);
   else {
     const [command, ...extra] = positionals;
     if (extra.length) throw new Error(`Unexpected argument: ${extra[0]}`);
+    if (command === 'init' || command === 'check') notice = updateNotice(await installedVersion());
     const project = resolve(values.project ?? process.cwd());
     if (command === 'check') {
       const result = await scanSpecs(project);
@@ -49,6 +54,9 @@ try {
 } catch (error) {
   console.error(`Galicia: ${(error as Error).message}`);
   process.exitCode = 1;
+} finally {
+  const message = await notice;
+  if (message) console.error(`\n${message}`);
 }
 
 // All work and terminal cleanup completed. Native readline can retain input handles.
