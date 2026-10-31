@@ -33,13 +33,17 @@ export function homebrewFormula(version: string, sha256: string): string {
   test do
     assert_equal "${version}", shell_output("#{bin}/galicia --version").strip
     ENV["GALICIA_NO_UPDATE_CHECK"] = "1"
-    system bin/"galicia", "init", "--agents", "codex,claude,cursor,grok", "--hooks", "--yes"
-    assert_path_exists testpath/".agents/skills/terse/SKILL.md"
-    assert_path_exists testpath/".claude/skills/spec/SKILL.md"
-    assert_path_exists testpath/".galicia/prompts/find-rc.md"
-    assert_match "Already initialised", shell_output("#{bin}/galicia init --agents codex,claude,cursor,grok --hooks --yes")
-    system bin/"galicia", "check"
-    system Formula["node"].opt_bin/"node", testpath/".galicia/check.ts"
+    project = testpath/"project"
+    project.mkpath
+    cd project do
+      system bin/"galicia", "init", "--agents", "codex,claude,cursor,grok", "--hooks", "--yes"
+      assert_path_exists project/".agents/skills/terse/SKILL.md"
+      assert_path_exists project/".claude/skills/spec/SKILL.md"
+      assert_path_exists project/".galicia/prompts/find-rc.md"
+      assert_match "Already initialised", shell_output("#{bin}/galicia init --agents codex,claude,cursor,grok --hooks --yes")
+      system bin/"galicia", "check"
+      system Formula["node"].opt_bin/"node", project/".galicia/check.ts"
+    end
   end
 end
 `;
