@@ -1,14 +1,9 @@
 name: Release Homebrew CLI
 
 on:
-  workflow_dispatch:
-    inputs:
-      tag:
-        description: "Stable tag matching package.json on main, e.g. v0.1.0"
-        required: true
-        type: string
   push:
-    tags: ["v*.*.*"]
+    branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -18,23 +13,33 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  package:
+  plan:
     runs-on: ubuntu-latest
     outputs:
-      tag: ${{ steps.source.outputs.tag }}
-      sha: ${{ steps.source.outputs.sha }}
+      tag: ${{ steps.plan.outputs.tag }}
+      publish: ${{ steps.plan.outputs.publish }}
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          ref: ${{ github.event_name == 'workflow_dispatch' && 'main' || github.ref }}
-      - name: Validate release source
-        id: source
+          node-version: "22.23.4"
+      - name: Derive release from package version
+        id: plan
         env:
-          RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
+          GH_TOKEN: ${{ github.token }}
         run: |
-          node --input-type=module -e 'import { readFileSync } from "node:fs"; const tag = process.env.RELEASE_TAG; if (!/^v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$/.test(tag) || tag !== `v${JSON.parse(readFileSync("package.json", "utf8")).version}`) throw Error("Stable tag must match package.json");'
-          echo "tag=$RELEASE_TAG" >> "$GITHUB_OUTPUT"
-          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          gh api --paginate --slurp "repos/$GITHUB_REPOSITORY/releases?per_page=100" > "$RUNNER_TEMP/releases.json"
+          node scripts/release-plan.ts "$RUNNER_TEMP/releases.json" >> "$GITHUB_OUTPUT"
+
+  package:
+    needs: plan
+    if: needs.plan.outputs.publish == 'true'
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ needs.plan.outputs.tag }}
+      sha: ${{ github.sha }}
+    steps:
+      - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: "22.23.4"
@@ -44,7 +49,7 @@ jobs:
       - run: pnpm test
       - run: node scripts/release.ts --tag "$RELEASE_TAG"
         env:
-          RELEASE_TAG: ${{ steps.source.outputs.tag }}
+          RELEASE_TAG: ${{ needs.plan.outputs.tag }}
       - uses: actions/upload-artifact@v4
         with:
           name: homebrew-release

@@ -53,13 +53,15 @@ Generated outputs stay ignored under `.scratch/`. Release workflow copies the pu
 
 Requires Git checkout of `mrlemoos/galicia`, GitHub Actions enabled and workflow token allowed to push `Formula/galicia.rb` to `main`. Protected branches need an appropriate bot permission or a reviewed manual formula commit. Package version must still match the tag on `main` when publishing.
 
-1. Update root `package.json` version for each release. Commit reviewed source and workflow to `main`.
+1. Update root `package.json` to a new stable semver version, e.g. `0.1.1`.
 2. Run `pnpm install --frozen-lockfile`, `pnpm run check`, `pnpm test`.
-3. In GitHub Actions, select `Release Homebrew CLI`, choose `Run workflow` on `main`, enter the matching stable tag, e.g. `v0.1.0`. CLI alternative: `gh workflow run release.yml --ref main -f tag=v0.1.0`, requires authenticated GitHub CLI with Actions write access. Existing tag route remains available: `git tag v0.1.0` followed by `git push origin v0.1.0`.
-4. Workflow packages runtime and checksum. Actual Homebrew installation/test runs on macOS and Linux against that archive through a temporary tap.
-5. After both pass, workflow creates a draft GitHub release at the validated source commit, creating the tag if absent, commits formula to `main`, then publishes stable release as latest. First publication makes the install commands available.
+3. Commit and push to `main`. Workflow derives tag `v0.1.1` from `package.json`. No manual tag or dispatch required.
+4. Published versions skip. New versions must exceed previous stable releases. Invalid versions and unfinished drafts fail before packaging. GitHub API failures fail the job.
+5. Workflow packages the pushed commit and tests the archive with Homebrew on macOS/Linux. After both pass, it creates the tag and draft release, commits the formula to `main`, then publishes the release as latest.
 
-Manual dispatch packages `main` and requires its package version to match the requested stable tag. Existing tags must resolve to the packaged commit. Concurrent releases queue without cancelling running validation.
+Manual retry: `gh workflow run release.yml --ref main`. Requires authenticated GitHub CLI with Actions write access. The version still comes from `package.json`. Existing tags must resolve to the packaged commit. Concurrent releases queue without cancelling running validation.
+
+Release planning: `node scripts/release-plan.ts RELEASES_JSON`, requires Node >=22.18, repository-root working directory and paginated GitHub release JSON from `gh api --paginate --slurp repos/mrlemoos/galicia/releases`. Prints tag and publication decision for workflow outputs. Tests: `node --test tests/release-plan.test.ts`.
 
 Treat tags/assets as immutable. If publication stops after draft creation, inspect draft assets and formula commit before recovery. Preserve the original archive/checksum pair; do not replace an existing release archive with a rebuilt file. A formula push may fail under branch protection; draft remains unpublished.
 
