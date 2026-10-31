@@ -55,9 +55,11 @@ Requires Git checkout of `mrlemoos/galicia`, GitHub Actions enabled and workflow
 
 1. Update root `package.json` version for each release. Commit reviewed source and workflow to `main`.
 2. Run `pnpm install --frozen-lockfile`, `pnpm run check`, `pnpm test`.
-3. Tag reviewed commit, e.g. `git tag v0.1.0`, then `git push origin v0.1.0`.
+3. In GitHub Actions, select `Release Homebrew CLI`, choose `Run workflow` on `main`, enter the matching stable tag, e.g. `v0.1.0`. CLI alternative: `gh workflow run release.yml --ref main -f tag=v0.1.0`, requires authenticated GitHub CLI with Actions write access. Existing tag route remains available: `git tag v0.1.0` followed by `git push origin v0.1.0`.
 4. Workflow packages runtime and checksum. Actual Homebrew installation/test runs on macOS and Linux against that archive through a temporary tap.
-5. After both pass, workflow creates a draft GitHub release, commits formula to `main`, then publishes stable release as latest. First publication makes the install commands available.
+5. After both pass, workflow creates a draft GitHub release at the validated source commit, creating the tag if absent, commits formula to `main`, then publishes stable release as latest. First publication makes the install commands available.
+
+Manual dispatch packages `main` and requires its package version to match the requested stable tag. Existing tags must resolve to the packaged commit. Concurrent releases queue without cancelling running validation.
 
 Treat tags/assets as immutable. If publication stops after draft creation, inspect draft assets and formula commit before recovery. Preserve the original archive/checksum pair; do not replace an existing release archive with a rebuilt file. A formula push may fail under branch protection; draft remains unpublished.
 

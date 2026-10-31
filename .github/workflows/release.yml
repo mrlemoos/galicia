@@ -1,6 +1,12 @@
 name: Release Homebrew CLI
 
 on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Stable tag matching package.json on main, e.g. v0.1.0"
+        required: true
+        type: string
   push:
     tags: ["v*.*.*"]
 
@@ -14,8 +20,21 @@ concurrency:
 jobs:
   package:
     runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.source.outputs.tag }}
+      sha: ${{ steps.source.outputs.sha }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'workflow_dispatch' && 'main' || github.ref }}
+      - name: Validate release source
+        id: source
+        env:
+          RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
+        run: |
+          node --input-type=module -e 'import { readFileSync } from "node:fs"; const tag = process.env.RELEASE_TAG; if (!/^v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$/.test(tag) || tag !== `v${JSON.parse(readFileSync("package.json", "utf8")).version}`) throw Error("Stable tag must match package.json");'
+          echo "tag=$RELEASE_TAG" >> "$GITHUB_OUTPUT"
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
       - uses: actions/setup-node@v4
         with:
           node-version: "22.23.4"
@@ -25,7 +44,7 @@ jobs:
       - run: pnpm test
       - run: node scripts/release.ts --tag "$RELEASE_TAG"
         env:
-          RELEASE_TAG: ${{ github.ref_name }}
+          RELEASE_TAG: ${{ steps.source.outputs.tag }}
       - uses: actions/upload-artifact@v4
         with:
           name: homebrew-release
@@ -58,7 +77,7 @@ jobs:
           brew test local/galicia/galicia
 
   publish:
-    needs: homebrew
+    needs: [package, homebrew]
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -76,10 +95,15 @@ jobs:
       - name: Publish archive and formula
         env:
           GH_TOKEN: ${{ github.token }}
-          RELEASE_TAG: ${{ github.ref_name }}
+          RELEASE_TAG: ${{ needs.package.outputs.tag }}
+          RELEASE_SHA: ${{ needs.package.outputs.sha }}
         run: |
           node --input-type=module -e 'import { readFileSync } from "node:fs"; if (`v${JSON.parse(readFileSync("package.json", "utf8")).version}` !== process.env.RELEASE_TAG) throw Error("Release tag no longer matches main package version");'
-          gh release create "$RELEASE_TAG" .scratch/release/* --verify-tag --generate-notes --draft
+          if git ls-remote --exit-code origin "refs/tags/$RELEASE_TAG" >/dev/null; then
+            git fetch origin "refs/tags/$RELEASE_TAG:refs/tags/$RELEASE_TAG"
+            test "$(git rev-parse "$RELEASE_TAG^{commit}")" = "$RELEASE_SHA"
+          fi
+          gh release create "$RELEASE_TAG" .scratch/release/* --target "$RELEASE_SHA" --generate-notes --draft
           mkdir -p Formula
           cp .scratch/release/galicia.rb Formula/galicia.rb
           git config user.name github-actions[bot]
