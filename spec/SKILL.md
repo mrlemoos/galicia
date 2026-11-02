@@ -9,7 +9,7 @@ Synthesise existing discussion; no new interview. Read relevant context.md, docs
 
 Prefer existing highest useful behavioural test seam. Confirm seam with user unless already agreed. New seam: explain need. Cover distinct user outcomes, edge cases, failures; skip repetitive story boilerplate.
 
-Write docs/specs/<slug>.md unless repo prescribes another local path. Status: draft, active, complete, superseded, or abandoned. Include owner/domain, related ADRs, tickets, superseded-by when relevant.
+Write docs/specs/<slug>.md unless repo prescribes another local path. Start from .galicia/templates/spec.md when present; replace every placeholder. Status: draft, active, complete, superseded, or abandoned. Include owner/domain, related ADRs, tickets, superseded-by when relevant.
 
 Sections: problem; intended behaviour; acceptance checks; implementation decisions/contracts; test seam + commands/prior art; exclusions; unresolved decisions. Paths useful for navigation; avoid brittle implementation recipes. Prototype snippet only when clearer than prose; label provenance.
 

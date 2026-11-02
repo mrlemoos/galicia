@@ -69,7 +69,7 @@ export function mergeHook(body: string | null, agent: Agent): string {
   return `${JSON.stringify(config, null, 2)}\n`;
 }
 
-const guidance = `## Galicia\n\nRead context.md first; load relevant domain context only. Domain terms: docs/Language.md. Decisions: docs/adr/. Specs/tickets: docs/specs/. Local Markdown only. No emojis. Preserve checks, exact contracts and uncertainty. Before consequential ADR work, recommend scoped small-model research/review; spawn only when authorised.\n\nStartup review fallback: run \`node .galicia/check.ts\` once per session if no startup hook ran. Metadata flags are review candidates; never delete without explicit user approval. Follow relevant specs to compare implementation when needed; age alone proves nothing. Grilling cadence: read .galicia/config.json, ask user if unset.\n`;
+const guidance = `## Galicia\n\nRead context.md first; load relevant domain context only. Domain terms: docs/Language.md. Decisions: docs/adr/. Specs/tickets: docs/specs/. Start new records from .galicia/templates/adr.md, spec.md, or ticket.md. Local Markdown only. No emojis. Preserve checks, exact contracts and uncertainty. Before consequential ADR work, recommend scoped small-model research/review; spawn only when authorised.\n\nStartup review fallback: run \`node .galicia/check.ts\` once per session if no startup hook ran. Metadata flags are review candidates; never delete without explicit user approval. Follow relevant specs to compare implementation when needed; age alone proves nothing. Grilling cadence: read .galicia/config.json, ask user if unset.\n`;
 
 export async function planInstall(options: Options, source = sourceRoot): Promise<{ root: string; changes: Change[] }> {
   const root = await realpath(options.project);
@@ -100,6 +100,9 @@ export async function planInstall(options: Options, source = sourceRoot): Promis
     await safePath(root, resolve(root, path));
     // Existing domain context remains authoritative, even when Galicia generated it.
     await add(path, await existing(resolve(root, path)) ?? await load(`templates/${template}`), false);
+  }
+  for (const name of ['adr.md', 'spec.md', 'ticket.md']) {
+    await add(`.galicia/templates/${name}`, await load(`templates/${name}`), false);
   }
   for (const [path, body] of [['AGENTS.md', guidance], ...(options.agents.includes('claude') ? [['CLAUDE.md', '@AGENTS.md\n']] : [])]) {
     await safePath(root, resolve(root, path!));

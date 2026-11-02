@@ -2,6 +2,8 @@
 
 Use <slug>.md; larger changes link <slug>/tickets/NN-short-title.md. Follow existing repo conventions when they differ.
 
+Copy [.galicia/templates/spec.md](../../.galicia/templates/spec.md) for a spec. Copy [.galicia/templates/ticket.md](../../.galicia/templates/ticket.md) for each approved implementation slice. Replace every placeholder; remove sections only when the template says they are optional.
+
 Start with metadata on separate lines:
 
 ```text

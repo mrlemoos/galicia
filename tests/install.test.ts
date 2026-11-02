@@ -34,6 +34,23 @@ test('complete setup preserves user context and unrelated hooks; rerun makes no 
   assert.deepEqual(again.changes.filter(c => c.state !== 'same'), []);
 }));
 
+test('setup installs unambiguous spec, ADR and ticket templates', async () => fixture(async root => {
+  const plan = await planInstall(options(root));
+  await applyPlan(plan.root, plan.changes);
+  const expected = {
+    'spec.md': ['Status: draft', 'Domain:', '## Intended behaviour', '## Acceptance checks', '## Unresolved decisions'],
+    'adr.md': ['Status: proposed', '## Context', '## Decision', '## Alternatives', '## Consequences', '## Linked specs'],
+    'ticket.md': ['Status: ready', 'Parent:', 'Blocked by:', '## What to build', '## Acceptance checks', '## Validation'],
+  };
+  for (const [name, required] of Object.entries(expected)) {
+    const body = await readFile(join(root, '.galicia/templates', name), 'utf8');
+    for (const text of required) assert.match(body, new RegExp(text));
+  }
+  assert.match(await readFile(join(root, 'AGENTS.md'), 'utf8'), /\.galicia\/templates\/adr\.md, spec\.md, or ticket\.md/);
+  assert.match(await readFile(join(root, 'docs/specs/README.md'), 'utf8'), /\.galicia\/templates\/spec\.md/);
+  assert.match(await readFile(join(root, 'docs/adr/README.md'), 'utf8'), /\.galicia\/templates\/adr\.md/);
+}));
+
 test('edited skill conflicts abort entire plan without touching unrelated files', async () => fixture(async root => {
   let plan = await planInstall(options(root));
   await applyPlan(plan.root, plan.changes);

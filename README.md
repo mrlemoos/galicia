@@ -80,6 +80,9 @@ context.md
 docs/Language.md
 docs/adr/README.md
 docs/specs/README.md
+.galicia/templates/adr.md
+.galicia/templates/spec.md
+.galicia/templates/ticket.md
 .galicia/config.json
 ```
 
