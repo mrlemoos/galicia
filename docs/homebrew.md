@@ -70,3 +70,18 @@ Treat tags/assets as immutable. If publication stops after draft creation, inspe
 `pnpm test` checks relocated archive setup, all agent assets/hooks, repeat installation, customised-file conflict rejection, source version, checksum agreement, invalid tags, occupied output, upgrade reminders and offline/timeout behaviour. Tests mock release responses; no live release required.
 
 Workflow adds actual `brew install` and `brew test` on macOS/Linux before publication. Local TypeScript tests alone do not prove Homebrew installation, GitHub workflow execution, public release availability or agent startup delivery. [Homebrew tap conventions](https://docs.brew.sh/How-to-Create-and-Maintain-a-Tap), [formula cookbook](https://docs.brew.sh/Formula-Cookbook), [GitHub release API](https://docs.github.com/en/rest/releases/releases#get-the-latest-release).
+
+## Resolving install conflicts
+
+`galicia init` previews paths before writing. Existing files without a manifest hash update to Galicia's copy. Existing context files stay unchanged; guidance outside Galicia markers and unrelated hook fields stay intact.
+
+Edited files recorded by Galicia prompt per file. Choose `keep` to preserve your bytes or `take` to replace them with Galicia's copy. Default is `keep`. A kept file prompts again only if you edit it or Galicia's copy changes. Cancel before applying to write nothing.
+
+For unattended setup, choose explicitly:
+
+```sh
+galicia init --agents codex --on-conflict=keep --yes
+galicia init --agents codex --on-conflict=take --yes
+```
+
+`--yes` accepts the final write confirmation; it does not choose `take`. Non-interactive conflicts require `--on-conflict`. `--dry-run` shows before and after, writes nothing and exits successfully even with conflicts.

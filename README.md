@@ -134,3 +134,18 @@ pnpm build
 ```
 
 `pnpm dev` serves the website at http://localhost:4321. `pnpm build` writes static output to `website/dist/`. See [website guide](website/README.md).
+
+## Resolving install conflicts
+
+`galicia init` previews paths before writing. Existing files without a manifest hash update to Galicia's copy. Existing context files stay unchanged; guidance outside Galicia markers and unrelated hook fields stay intact.
+
+Edited files recorded by Galicia prompt per file. Choose `keep` to preserve your bytes or `take` to replace them with Galicia's copy. Default is `keep`. A kept file prompts again only if you edit it or Galicia's copy changes. Cancel before applying to write nothing.
+
+For unattended setup, choose explicitly:
+
+```sh
+galicia init --agents codex --on-conflict=keep --yes
+galicia init --agents codex --on-conflict=take --yes
+```
+
+`--yes` accepts the final write confirmation; it does not choose `take`. Non-interactive conflicts require `--on-conflict`. `--dry-run` shows before and after, writes nothing and exits successfully even with conflicts.

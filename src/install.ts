@@ -10,7 +10,7 @@ export const agents = ['codex', 'claude', 'cursor', 'grok'] as const;
 export type Agent = typeof agents[number];
 export type Skill = typeof skills[number];
 export type Options = { project: string; agents: Agent[]; skills: Skill[]; cadence: 'ask' | 'one' | 'batch'; hooks: boolean };
-export type Change = { path: string; before: string | null; after: string; state: 'create' | 'update' | 'same' | 'conflict' };
+export type Change = { path: string; before: string | null; after: string; state: 'create' | 'update' | 'same' | 'conflict' | 'keep'; declined?: string };
 export const sourceRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const hash = (value: string) => createHash('sha256').update(value).digest('hex');
 
@@ -78,14 +78,20 @@ export async function planInstall(options: Options, source = sourceRoot): Promis
   if (!['ask', 'one', 'batch'].includes(options.cadence)) throw new Error('Invalid grilling cadence.');
   await safePath(root, resolve(root, '.galicia/manifest.json'));
   const receipt = await existing(resolve(root, '.galicia/manifest.json'));
-  const owned = receipt ? object(object(JSON.parse(receipt)).files) : {};
+  const manifest = receipt ? object(JSON.parse(receipt)) : {};
+  const owned = receipt ? object(manifest.files) : {};
+  const declined = manifest.declined === undefined ? {} : object(manifest.declined);
+  for (const entries of [owned, declined]) {
+    if (Object.values(entries).some(value => typeof value !== 'string' || !/^[a-f0-9]{64}$/.test(value))) throw new Error('Invalid manifest hashes.');
+  }
   const changes: Change[] = [];
   async function add(path: string, after: string, merge: boolean) {
     const target = resolve(root, path);
     await safePath(root, target);
     const before = await existing(target);
-    const state = before === after ? 'same' : before === null ? 'create' : merge || owned[path] === hash(before) ? 'update' : 'conflict';
-    changes.push({ path, before, after, state });
+    const state = before === after ? 'same' : before === null ? 'create' : merge || owned[path] === undefined ? 'update' : owned[path] !== hash(before) || declined[path] !== undefined && declined[path] !== hash(after) ? 'conflict' : 'update';
+    const refused = declined[path] === hash(after) && before !== null && owned[path] === hash(before) && before !== after;
+    changes.push({ path, before, after, state: refused ? 'keep' : state, ...(refused ? { declined: hash(after) } : {}) });
   }
   const load = (path: string) => readFile(resolve(source, path), 'utf8');
   for (const skill of options.skills) {
@@ -128,15 +134,36 @@ export async function planInstall(options: Options, source = sourceRoot): Promis
     await safePath(root, resolve(root, path));
     await add(path, mergeHook(await existing(resolve(root, path)), agent), true);
   }
-  const files = Object.fromEntries(changes.filter(c => c.state !== 'conflict').map(c => [c.path, hash(c.after)]));
-  await add('.galicia/manifest.json', `${JSON.stringify({ version: 1, files }, null, 2)}\n`, true);
+  await add('.galicia/manifest.json', '', true);
+  if (!changes.some(c => c.state === 'conflict')) return { root, changes: sealPlan(changes) };
   return { root, changes };
+}
+
+export type Resolution = 'keep' | 'take';
+
+export function sealPlan(changes: Change[], resolutions: Record<string, Resolution> = {}): Change[] {
+  const sealed = changes.map(change => {
+    if (change.state !== 'conflict') return { ...change };
+    const answer = resolutions[change.path];
+    if (answer !== 'keep' && answer !== 'take') throw new Error(`Unresolved conflict: ${change.path}`);
+    return { ...change, state: answer === 'keep' ? 'keep' as const : 'update' as const,
+      ...(answer === 'keep' ? { declined: hash(change.after) } : {}) };
+  });
+  const entries = sealed.filter(c => c.path !== '.galicia/manifest.json');
+  const files = Object.fromEntries(entries.map(c => [c.path, hash(c.state === 'keep' ? c.before! : c.after)]));
+  const declined = Object.fromEntries(entries.filter(c => c.state === 'keep' && c.declined).map(c => [c.path, c.declined]));
+  const manifest = sealed.find(c => c.path === '.galicia/manifest.json');
+  if (manifest) {
+    manifest.after = `${JSON.stringify({ version: 1, files, ...(Object.keys(declined).length ? { declined } : {}) }, null, 2)}\n`;
+    manifest.state = manifest.before === manifest.after ? 'same' : manifest.before === null ? 'create' : 'update';
+  }
+  return sealed;
 }
 
 export async function applyPlan(root: string, changes: Change[]): Promise<void> {
   if (changes.some(c => c.state === 'conflict')) throw new Error('Conflicts found. Preserve files; resolve or choose another project before retrying.');
-  const pending = changes.filter(c => c.state !== 'same');
-  for (const change of pending) {
+  const pending = changes.filter(c => c.state === 'create' || c.state === 'update');
+  for (const change of changes) {
     await safePath(root, resolve(root, change.path));
     if (await existing(resolve(root, change.path)) !== change.before) throw new Error(`File changed after preview: ${change.path}`);
   }
@@ -145,6 +172,7 @@ export async function applyPlan(root: string, changes: Change[]): Promise<void> 
     for (const change of pending) {
       const path = resolve(root, change.path);
       await safePath(root, path);
+      if (await existing(path) !== change.before) throw new Error(`File changed after preview: ${change.path}`);
       await mkdir(dirname(path), { recursive: true });
       const temp = `${path}.${randomUUID()}.tmp`;
       // Open before cleanup scope: a colliding file belongs to somebody else.
