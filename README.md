@@ -11,7 +11,7 @@ Spend effort where it earns trust. Preserve evidence, exact contracts and uncert
 
 | Skill | Job |
 |---|---|
-| `terse` | Compress communication; ultra requests concise work without promising hidden reasoning savings. |
+| `terse` | Compress chat until stop. Default ultra. No hidden-reasoning savings claim. |
 | `rubberduck` | Resolve design decisions. Pick one-question or independent-batch cadence at setup. |
 | `spec` | Write local change specification; recommend `breakdown` for larger work. |
 | `breakdown` | Produce approved vertical tickets with explicit blockers. |
