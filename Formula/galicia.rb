@@ -1,8 +1,8 @@
 class Galicia < Formula
   desc "Concise engineering skills and project-local context for coding agents"
   homepage "https://github.com/mrlemoos/galicia"
-  url "https://github.com/mrlemoos/galicia/releases/download/v0.1.2/galicia-0.1.2.tar.gz"
-  sha256 "01b0a65b95ae302fd4b07b2e8751015d1c38652767fb4383c50c4c07824a33aa"
+  url "https://github.com/mrlemoos/galicia/releases/download/v0.1.3/galicia-0.1.3.tar.gz"
+  sha256 "7209f5c7b20cd879177f48c58ea270967a56158669ee785ea0bb40a57629cbfe"
   license "MIT"
 
   depends_on "node"
@@ -19,7 +19,7 @@ class Galicia < Formula
   end
 
   test do
-    assert_equal "0.1.2", shell_output("#{bin}/galicia --version").strip
+    assert_equal "0.1.3", shell_output("#{bin}/galicia --version").strip
     ENV["GALICIA_NO_UPDATE_CHECK"] = "1"
     project = testpath/"project"
     project.mkpath
