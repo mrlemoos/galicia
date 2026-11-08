@@ -33,3 +33,12 @@ Pull requests should explain the change, identify affected skills and report val
 ## Agent-specific instructions
 
 Read the relevant skill before changing it. Use the unslop skill when drafting prose. Treat references to "emails" as Apple Mail unless explicitly stated otherwise. Never commit credentials or private user data.
+
+
+<!-- galicia:start -->
+## Galicia
+
+Read context.md first; load relevant domain context only. Domain terms: docs/Language.md. Decisions: docs/adr/. Specs/tickets: docs/specs/. Local Markdown only. No emojis. Preserve checks, exact contracts and uncertainty. Before consequential ADR work, recommend scoped small-model research/review; spawn only when authorised.
+
+Startup review fallback: run `node .galicia/check.ts` once per session if no startup hook ran. Metadata flags are review candidates; never delete without explicit user approval. Follow relevant specs to compare implementation when needed; age alone proves nothing. Grilling cadence: read .galicia/config.json, ask user if unset.
+<!-- galicia:end -->
