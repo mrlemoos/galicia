@@ -9,7 +9,7 @@ Declare genuine blockers; no cycles. Independent work stays independent. Wide me
 
 Show numbered titles, blockers, delivered behaviour. Ask granularity, missing dependencies, merges/splits. Wait for approved breakdown before writing tickets.
 
-Write docs/specs/<feature>/tickets/<NN>-<slug>.md unless repo prescribes another local location. Dependency order, one file per ticket. Preserve parent spec; link it. No external tracker. Never close parent automatically.
+Write docs/specs/<feature>/tickets/<NN>-<slug>.md unless repo prescribes another local location. Start from .galicia/templates/ticket.md when present; replace every placeholder. Dependency order, one file per ticket. Preserve parent spec; link it. No external tracker. Never close parent automatically.
 
 Each ticket: status ready; parent; what to build; blocked by numbers/titles or none; acceptance checkboxes; validation command/seam; context/ADR links. No copied glossary, fragile code recipe, or omitted cross-layer work. Prototype contract snippet allowed with provenance.
 

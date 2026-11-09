@@ -14,7 +14,7 @@ export async function scanSpecs(project: string): Promise<Scan> {
   const root = await realpath(project);
   const result: Scan = { findings: [], warnings: [], inspected: 0 };
   let visited = 0;
-  async function walk(directory: string, inSpecs = false): Promise<void> {
+  async function walk(directory: string, inSpecs: boolean): Promise<void> {
     if (++visited > 1500) return;
     const entries = await readdir(directory, { withFileTypes: true });
     for (const entry of entries.sort((a, b) => a.name.localeCompare(b.name))) {
@@ -62,7 +62,7 @@ export async function scanSpecs(project: string): Promise<Scan> {
       if (reasons.length) result.findings.push({ path: relative(root, path), reason: reasons.join('; ') });
     }
   }
-  await walk(root);
+  await walk(root, false);
   if (visited > 1500 || result.inspected >= 300) result.warnings.push('Scan bounded at 1,500 directories / 300 Markdown files; review remaining specs manually.');
   return result;
 }
