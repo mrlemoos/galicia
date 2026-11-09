@@ -21,4 +21,5 @@ No provider credentials or paid model runs required for local build. `npm test` 
 - `spec`: distinct user outcomes replace mandatory extensive repetitive stories. Paths may navigate context; implementation recipes discouraged. Local Markdown replaces tracker publishing.
 - `breakdown`: same vertical/blocking/approval safeguards; local Markdown only, no external implement skill dependency.
 - `find-rc`: preserves symptom-specific failing loop, reduction, falsifiable hypotheses, one-variable probes, real-seam regression and cleanup. Reproduction limitations must remain explicit.
+- `unit-test`, `behavioural-test`, `e2e-test`: no original source; Galicia-authored. Scenarios judge against Galicia contract only: sphere boundaries, Arrange-Act-Assert, mock scope, no production edits to reach green, run evidence.
 - `terse`: chat output shape (answer first, 20-word cap, no routine tool narration, changed lines only, pre-send cut). Host complete-sentence style loses for chat. No measured output or hidden-reasoning savings. Filler and order scenarios check compression against preserved conditions.

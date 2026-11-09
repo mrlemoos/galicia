@@ -5,7 +5,7 @@ import { createHash, randomUUID } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { inside } from './check-specs.ts';
 
-export const skills = ['terse', 'rubberduck', 'spec', 'breakdown', 'find-rc'] as const;
+export const skills = ['terse', 'rubberduck', 'spec', 'breakdown', 'find-rc', 'unit-test', 'behavioural-test', 'e2e-test'] as const;
 export const agents = ['codex', 'claude', 'cursor', 'grok'] as const;
 export type Agent = typeof agents[number];
 export type Skill = typeof skills[number];

@@ -2,7 +2,7 @@
 
 ## Project structure and module organisation
 
-Keep each skill in a descriptive directory, with its instructions in `SKILL.md`. Galicia has five root skill directories, shared `src/` installer/checker code, `templates/` context starters, `scripts/` download/measurement utilities, `tests/` deterministic checks, `eval/` model scenarios and `assets/` branding. Read [context.md](context.md) for navigation. Skill prose uses caveman style, exact conditions, no emojis. Generated experiments belong in ignored `.scratch/`.
+Keep each skill in a descriptive directory, with its instructions in `SKILL.md`. Galicia has eight root skill directories, shared `src/` installer/checker code, `templates/` context starters, `scripts/` download/measurement utilities, `tests/` deterministic checks, `eval/` model scenarios and `assets/` branding. Read [context.md](context.md) for navigation. Skill prose uses caveman style, exact conditions, no emojis. Generated experiments belong in ignored `.scratch/`.
 
 Keep generated output and temporary experiments out of committed source. Document any new directory convention when introducing it.
 

@@ -5,7 +5,7 @@
 
 Agents reread whole docs, repeat checks and ask questions the repo already answers. You pay in tokens, waiting and attention.
 
-Galicia gives coding agents five concise skills and a map to the context each task needs. Resolve decisions, write specs, split work and find root causes. Keep agreed answers and decisions in your repo, ready for the next session.
+Galicia gives coding agents eight concise skills and a map to the context each task needs. Resolve decisions, write specs, split work, find root causes and write tests. Keep agreed answers and decisions in your repo, ready for the next session.
 
 Spend effort where it earns trust. Preserve evidence, exact contracts and uncertainty. Everything stays project-local, in files you can read and edit. [Read the philosophy](docs/philosophy.md).
 
@@ -16,6 +16,9 @@ Spend effort where it earns trust. Preserve evidence, exact contracts and uncert
 | `spec` | Write local change specification; recommend `breakdown` for larger work. |
 | `breakdown` | Produce approved vertical tickets with explicit blockers. |
 | `find-rc` | Reproduce symptom, minimise, test hypotheses, fix root cause, verify regression. |
+| `unit-test` | Test one file in isolation. Arrange-Act-Assert, collaborators mocked, run until green. |
+| `behavioural-test` | Test one user-facing scope. Mock lowest layer only; real layers above prove data flow. |
+| `e2e-test` | Test critical user journey through running app. Playwright preferred. |
 
 ## Install
 

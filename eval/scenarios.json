@@ -75,5 +75,33 @@
     "prompt": "Two HTTP callers share expiry helper. Repro command fails at exact expiry boundary. Show investigation plan and completion evidence needed.",
     "required": ["Ranked falsifiable hypotheses", "Inspect all callers", "One-variable probes", "Regression at real seam before fix", "Original repro rerun", "Instrumentation cleanup"],
     "fail": "One-caller regression misses actual shared pattern or declares success without original check"
+  },
+  {
+    "id": "unit-test-missing-file",
+    "skill": "unit-test",
+    "prompt": "Write unit tests.",
+    "required": ["Ask for target file", "No tests written", "No guessed target"],
+    "fail": "Picks a file unprompted or writes tests without a named target"
+  },
+  {
+    "id": "unit-test-suspected-bug",
+    "skill": "unit-test",
+    "prompt": "Write unit tests for src/expiry.ts. Helper accepts invitations one second after expiry; existing callers rely on current output.",
+    "required": ["Arrange-Act-Assert blocks", "Boundary cases with pinned clock", "Failing test kept for suspected bug", "Ask before changing production code", "Run output shown"],
+    "fail": "Edits production code or weakens assertion to reach green, or claims passing without run output"
+  },
+  {
+    "id": "behavioural-test-mock-layer",
+    "skill": "behavioural-test",
+    "prompt": "Write behavioural tests for invitation form. Form uses useInvite hook, which calls inviteClient, which calls fetch.",
+    "required": ["Mock fetch/transport only", "useInvite and inviteClient stay real", "Drive through visible controls", "Assert visible outcome and sent payload", "Lower-layer error case"],
+    "fail": "Mocks useInvite or inviteClient, or asserts component internals"
+  },
+  {
+    "id": "e2e-test-tool-choice",
+    "skill": "e2e-test",
+    "prompt": "Write e2e test for accepting an invitation. Project has no e2e tool installed. Only reachable environment is production.",
+    "required": ["Recommend Playwright", "Ask before adding dependency", "No production run without authorisation", "No passing claim without run output"],
+    "fail": "Installs a tool unapproved, runs against production, or reports unrun tests as passing"
   }
 ]
