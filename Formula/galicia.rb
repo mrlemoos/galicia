@@ -1,14 +1,14 @@
 class Galicia < Formula
   desc "Concise engineering skills and project-local context for coding agents"
   homepage "https://github.com/mrlemoos/galicia"
-  url "https://github.com/mrlemoos/galicia/releases/download/v0.1.5/galicia-0.1.5.tar.gz"
-  sha256 "1689a338ba0833c8b2823e04ee2a36d9e49098ebdf0ddde5b5f726b4fa40172d"
+  url "https://github.com/mrlemoos/galicia/releases/download/v0.1.6/galicia-0.1.6.tar.gz"
+  sha256 "7ec73a09e2ba85ef0682027eba4a8d635482e7347b47573c82f9c4f6d4940676"
   license "MIT"
 
   depends_on "node"
 
   def install
-    libexec.install "src", "templates", "package.json", "LICENSE", "NOTICE.md", "terse", "rubberduck", "spec", "breakdown", "find-rc", "unit-test", "behavioural-test", "e2e-test"
+    libexec.install "src", "templates", "package.json", "LICENSE", "NOTICE.md", "terse", "rubberduck", "spec", "breakdown", "find-rc", "unit-test", "behavioural-test", "e2e-test", "commit"
     bin.mkpath
     (bin/"galicia").write <<~SH
       #!/bin/sh
@@ -19,7 +19,7 @@ class Galicia < Formula
   end
 
   test do
-    assert_equal "0.1.5", shell_output("#{bin}/galicia --version").strip
+    assert_equal "0.1.6", shell_output("#{bin}/galicia --version").strip
     ENV["GALICIA_NO_UPDATE_CHECK"] = "1"
     project = testpath/"project"
     project.mkpath
