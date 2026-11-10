@@ -10,6 +10,7 @@ const skills = [
   { name: 'unit-test', label: 'Prove the smallest piece.', text: 'Test one file in isolation. Arrange, act, assert. Cover branches, boundaries and failures, then run until green.', prompt: '$unit-test. Cover src/expiry.ts.', result: 'Seven cases: valid, exact boundary, expired, missing timestamp, invalid date. Clock pinned. Tests pass; lint clean.', file: 'unit-test/SKILL.md' },
   { name: 'behavioural-test', label: 'Follow the data.', text: 'Test one user-facing scope. Mock only the lowest layer, keep everything above it real and watch the data flow through.', prompt: '$behavioural-test. Cover the invitation form.', result: 'API transport mocked; client, hooks and validation real. Submit sends expected payload. Server error shows message.', file: 'behavioural-test/SKILL.md' },
   { name: 'e2e-test', label: 'Walk the whole journey.', text: 'Test a critical user journey through the running app. Playwright preferred, nothing inside the app mocked.', prompt: '$e2e-test. Cover accepting an invitation.', result: 'Seed invitation, open link, accept, land on team page. Expired link rejected. Three local runs pass; production unchecked.', file: 'e2e-test/SKILL.md' },
+  { name: 'commit', label: 'Commit what you can prove.', text: 'Split agreed work into small commits. Each behaviour change includes the unit, behavioural, or end-to-end test that locks it.', prompt: '$commit. Split the expiry change.', result: '01. Reject at the expiry boundary. Unit test in the same commit.\n02. Show the date on the form. Behavioural test; transport mocked. Each commit green before the next.', file: 'commit/SKILL.md' },
 ];
 ---
 <!doctype html>
@@ -17,7 +18,7 @@ const skills = [
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Eight concise skills for coding agents. Spend less context, keep engineering judgement, and carry decisions between sessions in your repository." />
+    <meta name="description" content="Nine concise skills for coding agents. Spend less context, keep engineering judgement, and carry decisions between sessions in your repository." />
     <meta name="theme-color" content="#f7f7f2" />
     <link rel="icon" type="image/png" href="/galicia.png" />
     <title>Galicia — Keep the judgement. Lose the overhead.</title>
@@ -29,7 +30,7 @@ const skills = [
       <section class="hero">
         <div class="eyebrow"><span class="status-dot"></span> A little less overhead. A lot more intent.</div>
         <h1>Keep the judgement.<br /><span>Lose the overhead.</span></h1>
-        <p class="hero-copy">Your coding agent has enough to think about.<br class="desktop" /> Give it eight focused skills and the context that matters.</p>
+        <p class="hero-copy">Your coding agent has enough to think about.<br class="desktop" /> Give it nine focused skills and the context that matters.</p>
         <div class="actions"><a class="button" href="#install">Set up your project <span aria-hidden="true">↗</span></a><a class="text-link" href="#skills">Meet the skills <span aria-hidden="true">↓</span></a></div>
         <div class="hero-stage" role="img" aria-label="Galicia keeps project context and agent skills together">
           <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
@@ -42,7 +43,7 @@ const skills = [
         <div class="compatibility"><span>At home with your agent</span><div>Codex <i></i> Claude Code <i></i> Cursor <i></i> Grok</div></div>
       </section>
       <section class="skills section" id="skills">
-        <div class="section-heading"><div><p class="eyebrow">THE TOOLKIT</p><h2>Eight skills.<br />Room to think.</h2></div><p>No elaborate ritual. Pick the skill for the job.<br />Keep the decisions and evidence in your repo.</p></div>
+        <div class="section-heading"><div><p class="eyebrow">THE TOOLKIT</p><h2>Nine skills.<br />Room to think.</h2></div><p>No elaborate ritual. Pick the skill for the job.<br />Keep the decisions and evidence in your repo.</p></div>
         <div class="skill-workbench">
           <div class="skill-tabs" role="tablist" aria-label="Explore skills">{skills.map((skill, i) => <button id={`tab-${skill.name}`} role="tab" aria-selected={i === 0 ? 'true' : 'false'} aria-controls={`panel-${skill.name}`} tabindex={i === 0 ? 0 : -1} data-index={i}><span class="tab-number">0{i + 1}</span><span>{skill.name}</span><span class="tab-arrow" aria-hidden="true">↗</span></button>)}</div>
           <div class="skill-content">{skills.map((skill, i) => <div id={`panel-${skill.name}`} role="tabpanel" aria-labelledby={`tab-${skill.name}`} hidden={i !== 0} tabindex="0"><span class="skill-tag">/{skill.name}</span><h3>{skill.label}</h3><p>{skill.text}</p><div class="conversation"><div class="conversation-label">AN ILLUSTRATIVE EXCHANGE</div><div class="prompt">{skill.prompt}</div><div class="reply"><span class="reply-mark" aria-hidden="true">g.</span><p>{skill.result}</p></div></div><a class="text-link" href={`${repo}/blob/main/${skill.file}`}>Read the skill <span aria-hidden="true">↗</span></a></div>)}</div>

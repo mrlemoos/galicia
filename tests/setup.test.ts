@@ -13,7 +13,7 @@ test('piped setup installs pinned archive without Git; download failures return 
     const revision = '050d4835a5e0032230f6a358567771ea3ec4e73d';
     const source = join(temporary, `galicia-${revision}`);
     await mkdir(source);
-    for (const path of ['src', 'templates', 'terse', 'rubberduck', 'spec', 'breakdown', 'find-rc', 'unit-test', 'behavioural-test', 'e2e-test', 'LICENSE', 'NOTICE.md', 'package.json']) {
+    for (const path of ['src', 'templates', 'terse', 'rubberduck', 'spec', 'breakdown', 'find-rc', 'unit-test', 'behavioural-test', 'e2e-test', 'commit', 'LICENSE', 'NOTICE.md', 'package.json']) {
       await cp(resolve(path), join(source, path), { recursive: true });
     }
     const archive = join(temporary, 'source.tar.gz');

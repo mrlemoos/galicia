@@ -1,6 +1,6 @@
 # Galicia context
 
-Resource-conscious engineering tools. Eight concise instruction skills, local Markdown context and lifecycle conventions, project-local setup, read-only spec review. CLI needs Node, no runtime packages. Homebrew manages CLI and Node; skills/context stay project-local. No external tracker, proxy or model calls.
+Resource-conscious engineering tools. Nine concise instruction skills, local Markdown context and lifecycle conventions, project-local setup, read-only spec review. CLI needs Node, no runtime packages. Homebrew manages CLI and Node; skills/context stay project-local. No external tracker, proxy or model calls.
 
 | Scope | Context |
 |---|---|

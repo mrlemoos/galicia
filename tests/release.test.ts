@@ -28,7 +28,7 @@ test('release packages relocatable CLI/assets; checksum and formula agree; runti
     assert.equal(spawnSync('tar', ['-xzf', join(output, archiveName), '-C', unpack]).status, 0);
     const source = join(unpack, `galicia-${version}`);
     const contents = await readdir(source);
-    assert.deepEqual(contents.sort(), ['LICENSE', 'NOTICE.md', 'README.md', 'behavioural-test', 'breakdown', 'e2e-test', 'find-rc', 'package.json', 'rubberduck', 'spec', 'src', 'templates', 'terse', 'unit-test']);
+    assert.deepEqual(contents.sort(), ['LICENSE', 'NOTICE.md', 'README.md', 'behavioural-test', 'breakdown', 'commit', 'e2e-test', 'find-rc', 'package.json', 'rubberduck', 'spec', 'src', 'templates', 'terse', 'unit-test']);
     const project = join(temporary, 'project with spaces');
     await mkdir(project);
     const args = ['init', '--agents', 'codex,claude,cursor,grok', '--hooks', '--yes'];

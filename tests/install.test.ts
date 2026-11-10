@@ -13,7 +13,7 @@ async function fixture(run: (root: string) => Promise<void>) {
   const root = await mkdtemp(join(tmpdir(), 'galicia-test-'));
   try { await run(root); } finally { await rm(root, { recursive: true, force: true }); }
 }
-const options = (project: string): Options => ({ project, agents: ['codex', 'claude', 'cursor', 'grok'], skills: ['terse', 'rubberduck', 'spec', 'breakdown', 'find-rc', 'unit-test', 'behavioural-test', 'e2e-test'], cadence: 'batch', hooks: true });
+const options = (project: string): Options => ({ project, agents: ['codex', 'claude', 'cursor', 'grok'], skills: ['terse', 'rubberduck', 'spec', 'breakdown', 'find-rc', 'unit-test', 'behavioural-test', 'e2e-test', 'commit'], cadence: 'batch', hooks: true });
 
 test('complete setup preserves user context and unrelated hooks; rerun makes no changes', async () => fixture(async root => {
   await mkdir(join(root, '.claude'));
@@ -183,7 +183,7 @@ test('kept edits persist across quiet runs, other changes, and new Galicia copie
   await applyPlan(root, differentCadence.changes);
   assert.deepEqual(JSON.parse(await readFile(join(root, '.galicia/manifest.json'), 'utf8')).declined, receipt.declined);
   await fixture(async source => {
-    for (const name of ['terse', 'rubberduck', 'spec', 'breakdown', 'find-rc', 'unit-test', 'behavioural-test', 'e2e-test', 'templates', 'src', 'NOTICE.md', 'LICENSE']) {
+    for (const name of ['terse', 'rubberduck', 'spec', 'breakdown', 'find-rc', 'unit-test', 'behavioural-test', 'e2e-test', 'commit', 'templates', 'src', 'NOTICE.md', 'LICENSE']) {
       await cp(join(sourceRoot, name), join(source, name), { recursive: true });
     }
     await writeFile(join(source, 'terse/SKILL.md'), 'New Galicia copy.');

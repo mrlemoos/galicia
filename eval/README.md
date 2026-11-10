@@ -22,4 +22,5 @@ No provider credentials or paid model runs required for local build. `npm test` 
 - `breakdown`: same vertical/blocking/approval safeguards; local Markdown only, no external implement skill dependency.
 - `find-rc`: preserves symptom-specific failing loop, reduction, falsifiable hypotheses, one-variable probes, real-seam regression and cleanup. Reproduction limitations must remain explicit.
 - `unit-test`, `behavioural-test`, `e2e-test`: no original source; Galicia-authored. Scenarios judge against Galicia contract only: sphere boundaries, Arrange-Act-Assert, mock scope, no production edits to reach green, run evidence.
+- `commit`: no original source; Galicia-authored. Scenarios judge against Galicia contract only: one behaviour per commit, test in the same commit at the lowest fitting sphere, approval before staging, green before the next commit.
 - `terse`: chat output shape (answer first, 20-word cap, no routine tool narration, changed lines only, pre-send cut). Host complete-sentence style loses for chat. No measured output or hidden-reasoning savings. Filler and order scenarios check compression against preserved conditions.
