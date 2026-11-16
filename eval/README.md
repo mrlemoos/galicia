@@ -15,6 +15,10 @@ Use original Matt Pocock 1.3.1 source and supplied Caveman instruction, fingerpr
 
 No provider credentials or paid model runs required for local build. `npm test` checks installer/checker behaviour, not these model outputs. Treat release as an MVP awaiting cross-model evaluation.
 
+## Context workflow scenarios
+
+`context-workflow` scenarios load installed `AGENTS.md` and `.galicia/context-workflow.md`, not a new skill. Prepare fresh projects with the files/history described in each prompt. Preserve fixture inputs and resulting diffs with observations. For the existing-project case, run bootstrap twice and compare the second diff. Exercise selective capture, unresolved choices, missing evidence and reversal separately. These cases remain unrun across all target clients; installer tests prove delivery and preservation only.
+
 ## Intentional differences
 
 - `rubberduck`: setup chooses one question or independent batches; no mandatory exploration subagent.

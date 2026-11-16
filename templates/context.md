@@ -10,6 +10,8 @@ Add one row per business domain when needed, pointing to its local context.md. D
 
 Small repo: describe purpose, boundaries and validation here. Split only when independent domains need separate loading.
 
+Explicit bootstrap request: `Bootstrap project context using .galicia/context-workflow.md`. Setup never infers project history. Capture settled consequential rationale in ADRs; skip implementation facts recoverable from code.
+
 ## Active changes
 
 Link relevant [specs](docs/specs/README.md). Completed changes retain durable rationale through ADRs. No automatic deletion.

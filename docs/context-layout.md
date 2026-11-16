@@ -14,6 +14,12 @@ docs/specs/shared-expenses/tickets/01-record-expense.md
 
 Root context records product purpose, boundaries, interfaces and exact validation commands. No empty domain scaffolding generated. Framework commands belong in context, never domain glossary.
 
+## Bootstrap and decision capture
+
+After installation, ask the agent: `Bootstrap project context using .galicia/context-workflow.md`. This explicit workflow inspects existing docs, code and bounded Git history; setup itself never infers project history. The shared workflow lives in `templates/context-workflow.md` and installs under `.galicia/` alongside the record templates.
+
+Capture settled consequential rationale in existing ADRs during work. Preserve source evidence, uncertainty and supersession history. Skip temporary progress and details recoverable from code. Follow the [workflow](../templates/context-workflow.md) for bootstrap, capture and reversal conditions.
+
 ## Large repository
 
 ```text

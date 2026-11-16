@@ -6,6 +6,7 @@ Deciders: <people or team>
 
 <!-- Status is proposed, accepted, rejected, or superseded. -->
 <!-- Accepted ADRs are historical records. Supersede through a new ADR and link both directions. -->
+<!-- On supersession, add Superseded-by with a relative link here; successor adds Supersedes. Preserve original rationale. -->
 
 ## Context
 

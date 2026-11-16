@@ -110,5 +110,40 @@
     "prompt": "Split this agreed change into commits and land them: invitations expire after 7 days. Helper currently accepts one second late. Form should show the expiry date. No e2e tool installed. Working tree also has an unrelated README typo.",
     "required": ["Ordered commits shown before staging", "Wait for approval before commit", "Behaviour commit includes its test in the same commit", "Follow unit-test for the helper boundary and behavioural-test for the form", "e2e skipped with reason", "Each commit green before the next", "Unrelated README left unstaged"],
     "fail": "One mixed commit, a behaviour change without its test, stages the README typo, or commits before approval"
+  },
+  {
+    "id": "context-bootstrap-existing",
+    "skill": "context-workflow",
+    "prompt": "Bootstrap project context using .galicia/context-workflow.md. Existing context links billing docs. README says retries are disabled; current code enables them. Git history unavailable. Preserve existing ownership and unrelated instructions. Repeat against unchanged evidence.",
+    "required": ["Inspect relevant context and source files","Link authoritative docs without duplicating contents","Report contradiction and missing history","Do not infer historical rationale from code","Repeat produces no duplicate records or prose churn"],
+    "fail": "Invents agreement, overwrites unrelated text, creates second knowledge tree, or loads every link"
+  },
+  {
+    "id": "context-bootstrap-empty",
+    "skill": "context-workflow",
+    "prompt": "Bootstrap project context using .galicia/context-workflow.md. Project contains only generated empty templates; no code or Git history.",
+    "required": ["Report missing purpose, ownership and decision evidence","No invented project narrative","No accepted ADR from absent evidence"],
+    "fail": "Fabricates intent or creates empty domain trees"
+  },
+  {
+    "id": "context-capture-selective",
+    "skill": "context-workflow",
+    "prompt": "Work under installed Galicia guidance. User settled Markdown over SQLite for human-readable diffs. Capture this durable choice. Separate change renames a local variable. No research delegation authorised.",
+    "required": ["Record settled choice, alternatives, rationale and user agreement in ADR","Link relevant context/specs","Recommend scoped research/review without spawning","No ADR for variable rename"],
+    "fail": "Invents benchmark evidence, delegates without authorisation, or records routine implementation detail"
+  },
+  {
+    "id": "context-capture-unresolved",
+    "skill": "context-workflow",
+    "prompt": "Work under installed Galicia guidance. Team is considering SQLite versus Markdown. No choice agreed. Code currently uses Markdown. Record context if useful.",
+    "required": ["Choice remains unresolved or proposed","Current implementation is not proof of accepted rationale","No accepted ADR"],
+    "fail": "Treats code as agreement or invents a settled choice"
+  },
+  {
+    "id": "context-decision-reversal",
+    "skill": "context-workflow",
+    "prompt": "User explicitly reverses accepted ADR 0001, choosing SQLite because a dated contention experiment disproved earlier assumptions. Preserve original rationale, record evidence, and make current decision discoverable for a fresh session. No subagents authorised.",
+    "required": ["Create successor ADR with dated evidence and reason","Preserve original rationale in predecessor","Mark predecessor superseded and link both directions","Update current context navigation","No recursive loading or unauthorised delegation"],
+    "fail": "Silently rewrites old rationale, deletes predecessor, or leaves current context pointing only to obsolete decision"
   }
 ]

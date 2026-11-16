@@ -51,6 +51,25 @@ test('setup installs unambiguous spec, ADR and ticket templates', async () => fi
   assert.match(await readFile(join(root, 'docs/adr/README.md'), 'utf8'), /\.galicia\/templates\/adr\.md/);
 }));
 
+test('context workflow reaches every target and protects edited workflow on upgrade', async () => fixture(async root => {
+  const plan = await planInstall(options(root));
+  await applyPlan(plan.root, plan.changes);
+  const workflow = await readFile(join(sourceRoot, 'templates/context-workflow.md'), 'utf8');
+  assert.equal(await readFile(join(root, '.galicia/context-workflow.md'), 'utf8'), workflow);
+  const guidance = await readFile(join(root, 'AGENTS.md'), 'utf8');
+  assert.match(guidance, /Explicit context bootstrap: read \.galicia\/context-workflow\.md when requested/);
+  assert.match(await readFile(join(root, 'CLAUDE.md'), 'utf8'), /@AGENTS.md/);
+  for (const path of ['.agents/skills/spec/SKILL.md', '.claude/skills/spec/SKILL.md', '.galicia/prompts/spec.md']) {
+    assert.match(await readFile(join(root, path), 'utf8'), /\.galicia\/context-workflow\.md/);
+  }
+  assert.ok(!plan.changes.some(change => /^docs\/adr\/\d/.test(change.path)));
+  await writeFile(join(root, '.galicia/context-workflow.md'), 'User-owned workflow.\n');
+  const upgrade = await planInstall(options(root));
+  assert.equal(upgrade.changes.find(change => change.path === '.galicia/context-workflow.md')?.state, 'conflict');
+  await assert.rejects(applyPlan(upgrade.root, upgrade.changes), /Conflicts/);
+  assert.equal(await readFile(join(root, '.galicia/context-workflow.md'), 'utf8'), 'User-owned workflow.\n');
+}));
+
 test('edited skill conflicts abort entire plan without touching unrelated files', async () => fixture(async root => {
   let plan = await planInstall(options(root));
   await applyPlan(plan.root, plan.changes);

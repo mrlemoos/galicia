@@ -7,6 +7,8 @@ description: Synthesises agreed discussion into local change specification. Use 
 
 Synthesise existing discussion; no new interview. Read relevant context.md, docs/Language.md, domain context, ADRs, current behaviour. Mark missing decisions explicitly; never invent agreement. No emojis.
 
+Settled consequential rationale belongs in ADRs; link from spec. Follow .galicia/context-workflow.md when present. Skip implementation facts recoverable from code. Existing accepted ADR keeps original rationale; changed decision needs successor and bidirectional links.
+
 Prefer existing highest useful behavioural test seam. Confirm seam with user unless already agreed. New seam: explain need. Cover distinct user outcomes, edge cases, failures; skip repetitive story boilerplate.
 
 Write docs/specs/<slug>.md unless repo prescribes another local path. Start from .galicia/templates/spec.md when present; replace every placeholder. Status: draft, active, complete, superseded, or abandoned. Include owner/domain, related ADRs, tickets, superseded-by when relevant.

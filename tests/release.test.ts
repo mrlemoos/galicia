@@ -42,6 +42,7 @@ test('release packages relocatable CLI/assets; checksum and formula agree; runti
     assert.match(run(args).stdout, /Already initialised/);
     assert.equal(await readFile(join(project, '.agents/skills/terse/SKILL.md'), 'utf8'), await readFile(resolve('terse/SKILL.md'), 'utf8'));
     assert.match(await readFile(join(project, '.galicia/prompts/spec.md'), 'utf8'), /# Spec/);
+    assert.equal(await readFile(join(project, '.galicia/context-workflow.md'), 'utf8'), await readFile(resolve('templates/context-workflow.md'), 'utf8'));
     assert.equal(run(['check']).status, 0);
     assert.equal(spawnSync(process.execPath, [join(project, '.galicia/check.ts')]).status, 0);
     await writeFile(join(project, '.agents/skills/terse/SKILL.md'), 'Custom.');

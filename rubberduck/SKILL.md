@@ -16,3 +16,5 @@ Each question: number, concrete choice, recommended answer, material tradeoff. P
 For consequential ADR research/review, recommend scoped small-model subagent, e.g. Luna/Haiku where available. Name task, inputs, expected evidence. Spawn only when authorised. No delegation for trivial lookup.
 
 Done when scope, behaviour, failure cases, validation, delivery boundaries settled. Summarise agreements and unresolved items. Ask user to confirm shared understanding before implementation. No silent assumptions.
+
+After agreement, capture settled consequential rationale in ADRs; link relevant context/specs. Follow .galicia/context-workflow.md when present. Unresolved choices remain proposed. Skip routine implementation facts. Reversal preserves accepted predecessor; successor links both directions.
